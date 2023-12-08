@@ -70,7 +70,7 @@ const token = jwt.sign({
     expiresIn: '3000000'
 });
 
-res.json({token})
+res.json(token)
 
     
 }

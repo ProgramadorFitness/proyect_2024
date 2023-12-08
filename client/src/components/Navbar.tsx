@@ -4,6 +4,7 @@ import {FaTimes, FaBars} from "react-icons/fa";
 import { FaAngleDoubleRight } from "react-icons/fa";
 /*import Image from '../assets/icono.png';*/
 import { useState } from "react";
+import { useAuth } from "../auth/AuthProvider";
 //import { useAuth } from "../auth/AuthProvider";
 
 
@@ -17,10 +18,10 @@ const Nav = () => {
     }
 
     const handleClickLogOut = () => {
-        if(auth.isAuthenticated == true){
-            setClick(!click);
+        
+        localStorage.removeItem('token')
+        auth.isAuthenticated = false
     }
-}
     
     const  content = <>
         <div className="lg:hidden block absolute top-16 w-full left-0 rigth-0 bg-slate-300 transition overflow-y-auto overflow-x-auto">
