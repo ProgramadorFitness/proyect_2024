@@ -17,7 +17,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username, password } = req.body;
+    const { id, username, password } = req.body;
     //--Validacion de usuario
     const user = yield user_1.default.findOne({ where: { username: username } });
     if (user) {
@@ -28,6 +28,7 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const hashPassword = yield bcrypt_1.default.hash(password, 10);
     try {
         yield user_1.default.create({
+            id_collector: id,
             username: username,
             password: hashPassword
         });
@@ -62,9 +63,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Generamos token
     const token = jsonwebtoken_1.default.sign({
         username: username
-    }, process.env.SECRET_KEY || 'ELTORPELLEGO', {
-        expiresIn: '3000000'
-    });
+    }, process.env.SECRET_KEY || 'ELTORPELLEGO', {});
     res.json(token);
 });
 exports.loginUser = loginUser;

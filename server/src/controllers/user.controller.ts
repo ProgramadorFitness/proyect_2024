@@ -7,7 +7,7 @@ import { json } from "sequelize";
 
 export const newUser = async (req: Request, res: Response) => {
 
-    const {username, password} = req.body;
+    const {id, username, password} = req.body;
 
     //--Validacion de usuario
      const user = await User.findOne({where:{username: username}})
@@ -22,8 +22,10 @@ export const newUser = async (req: Request, res: Response) => {
 
     try {
         await User.create({
+            id_collector: id,
             username: username,
-            password: hashPassword 
+            password: hashPassword
+            
         })
     
         res.json({
@@ -67,7 +69,7 @@ export const loginUser = async (req: Request, res: Response) => {
 const token = jwt.sign({
     username: username
 }, process.env.SECRET_KEY || 'ELTORPELLEGO',{
-    expiresIn: '3000000'
+   
 });
 
 res.json(token)

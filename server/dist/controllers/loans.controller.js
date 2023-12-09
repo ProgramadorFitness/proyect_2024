@@ -8,13 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InsertLoan = exports.loansConsult = exports.delet = exports.create = exports.list = void 0;
-const loans_models_1 = require("../models/loans.models");
-const connection_1 = require("../connection/connection");
+const loans_1 = __importDefault(require("../models/loans"));
+const connection_1 = require("../db/connection");
 const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const loans = yield loans_models_1.Loans.findAll();
+        const loans = yield loans_1.default.findAll();
         return res.status(200).json(loans);
     }
     catch (error) {
@@ -24,7 +27,7 @@ const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.list = list;
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield loans_models_1.Loans.create(Object.assign({}, req.body));
+        yield loans_1.default.create(Object.assign({}, req.body));
         return res.status(200).json({ "message": "Client save" });
     }
     catch (error) {
@@ -35,7 +38,7 @@ exports.create = create;
 const delet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        yield loans_models_1.Loans.destroy({ where: { id } });
+        yield loans_1.default.destroy({ where: { id } });
         return res.status(200).json({ "message": "Client Destroy" });
     }
     catch (error) {

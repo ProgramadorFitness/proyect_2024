@@ -1,13 +1,13 @@
-import { User } from "../models/models"
+import { Collector } from "../models/models"
 
 interface Props {
-  data: User[]
+  data: Collector[]
 }
 const Table_User = ({data}: Props) => {
   return (
     <div className='overflow-x-auto shadow-md sm:rounded-lg'>
         <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300'>
-            <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
+        <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
                 <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400">
                     <th>
                         <div className="flex items-center">
@@ -22,6 +22,9 @@ const Table_User = ({data}: Props) => {
                     <th scope="col" className="px-6 py-3">PHONE</th>
                     <th scope="col" className="px-6 py-3">PHONE #2</th>
                     <th scope="col" className="px-6 py-3">STATE</th>
+                    <th scope="col" className="px-6 py-3">GENRE</th>
+                    <th scope="col" className="px-6 py-3">CITY</th>
+                    <th scope="col" className="px-6 py-3">NEIGHBORHOOD</th>
                     <th scope="col" className="px-6 py-3">ACTION</th>
                 </thead>
                 <tbody>
@@ -47,6 +50,9 @@ const Table_User = ({data}: Props) => {
                     <td className="px-6 py-4">{item.phone}</td>
                     <td className="px-6 py-4">{item.phone2}</td>
                     <td className="px-6 py-4">{item.state}</td>
+                    <td className="px-6 py-4">{item.genre}</td>
+                    <td className="px-6 py-4">{item.city}</td>
+                    <td className="px-6 py-4">{item.neighborhood}</td>
                     <td className="px-6 py-4">
                     <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit user</a>
                     </td>

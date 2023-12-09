@@ -1,4 +1,4 @@
-import { DataTypes } from "sequelize"
+import { DataTypes, Model } from "sequelize"
 import  sequelize  from "../db/connection"
 
  const Client = sequelize.define('client', {
@@ -51,4 +51,4 @@ import  sequelize  from "../db/connection"
 }
     )
 
-    export default Client
+    export default Client 

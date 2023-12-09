@@ -3,7 +3,7 @@ import { newUser, loginUser} from "../controllers/user.controller";
 
 const routesUser = Router();
 
-routesUser.post('/', newUser);
+routesUser.post('/create', newUser);
 
 routesUser.post('/login', loginUser)
 

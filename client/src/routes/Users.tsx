@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import DefaultLayout from '../layout/DefaultLayout'
-import { User } from '../models/models'
+import { Collector } from '../models/models'
 import Api from '../controllers/user.controller'
 import Modal_Signup from '../components/Modal_Signup'
 import Modal_Add_Users from '../components/Modal_Add_User'
 import Table_User from '../components/Table_User'
 
 interface State {
-  user: User | null
-  listUser: User[]
+  collector: Collector | null
+  listCollector: Collector[]
 }
 
 const Users = () => {
 
   const[state, setState] = useState<State>({
-    user: null,
-    listUser:[]
+    collector: null,
+    listCollector:[]
   })
 
   useEffect(() => {
     (async function getClients() {
         const api = new Api()
-        const response = (await api.getUsers()).data
-        setState({user:null, listUser:response})
+        const response = (await api.getCollectors()).data
+        setState({collector:null, listCollector:response})
     })();
 },[]);
 
@@ -37,7 +37,7 @@ const Users = () => {
         </div>
       </div>
         <div className='py-8'>
-          <Table_User data={state.listUser}/>
+          <Table_User data={state.listCollector}/>
         </div>
     </DefaultLayout>
   )

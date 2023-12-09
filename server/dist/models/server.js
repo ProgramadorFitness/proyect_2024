@@ -41,13 +41,18 @@ const user_1 = __importDefault(require("./user"));
 const loans_1 = __importDefault(require("./loans"));
 const wallets_1 = __importDefault(require("./wallets"));
 const user_routes_1 = __importDefault(require("../routes/user.routes"));
-const connection_1 = __importDefault(require("../db/connection"));
 const cors_1 = __importDefault(require("cors"));
 const client_routes_1 = __importDefault(require("../routes/client.routes"));
 const validate_routes_1 = __importDefault(require("../routes/validate.routes"));
 const wallets_routes_1 = __importDefault(require("../routes/wallets.routes"));
 const loans_routes_1 = __importDefault(require("../routes/loans.routes"));
 const collectors_routes_1 = __importDefault(require("../routes/collectors.routes"));
+const collectors_1 = __importDefault(require("./collectors"));
+const connection_1 = __importDefault(require("../db/connection"));
+const wallets_controller_1 = require("../controllers/wallets.controller");
+const loans_controller_1 = require("../controllers/loans.controller");
+const client_controller_1 = require("../controllers/client.controller");
+const collectors_controller_1 = require("../controllers/collectors.controller");
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -66,7 +71,6 @@ class Server {
         this.app.use(express_1.default.json());
         this.app.use((0, cors_1.default)());
         this.app.use((0, express_1.urlencoded)({ extended: false }));
-        const upload = multer({ dest: 'uploads/' });
     }
     routes() {
         this.app.use('/api/users', user_routes_1.default);
@@ -75,15 +79,63 @@ class Server {
         this.app.use("/api/wallets", wallets_routes_1.default);
         this.app.use("/api/loans", loans_routes_1.default);
         this.app.use("/api/collectors", collectors_routes_1.default);
+        //--Walltes-Sql
+        this.app.get("/api/wallets/listjoin/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = yield (0, wallets_controller_1.walletsConsult)(id);
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Login-Sql
+        this.app.get("/api/loans/listjoin", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const results = yield (0, loans_controller_1.loansConsult)();
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Client-Sql
+        this.app.get("/api/clients/ident/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = yield (0, client_controller_1.ClientsConsult)(id);
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Collector-Sql
+        this.app.get("/api/collectors/id/:id", (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = yield (0, collectors_controller_1.collectorConsult)(id);
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
     }
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield connection_1.default.authenticate();
                 yield clients_1.default.sync();
-                yield user_1.default.sync();
                 yield loans_1.default.sync();
                 yield wallets_1.default.sync();
+                yield collectors_1.default.sync();
+                yield user_1.default.sync();
                 console.log('Connection has been established successfully');
             }
             catch (error) {

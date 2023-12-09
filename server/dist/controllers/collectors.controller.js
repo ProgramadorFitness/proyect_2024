@@ -8,12 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.delet = exports.create = exports.list = void 0;
-const collectors_models_1 = require("../models/collectors.models");
+exports.collectorConsult = exports.delet = exports.create = exports.list = void 0;
+const collectors_1 = __importDefault(require("../models/collectors"));
+const connection_1 = require("../db/connection");
 const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const collector = yield collectors_models_1.Collectors.findAll();
+        const collector = yield collectors_1.default.findAll();
         return res.status(200).json(collector);
     }
     catch (error) {
@@ -23,7 +27,7 @@ const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.list = list;
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield collectors_models_1.Collectors.create(Object.assign({}, req.body));
+        yield collectors_1.default.create(Object.assign({}, req.body));
         return res.status(200).json({ "message": "Collector save" });
     }
     catch (error) {
@@ -34,7 +38,7 @@ exports.create = create;
 const delet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        yield collectors_models_1.Collectors.destroy({ where: { id } });
+        yield collectors_1.default.destroy({ where: { id } });
         return res.status(200).json({ "message": "Collector Destroy" });
     }
     catch (error) {
@@ -42,3 +46,17 @@ const delet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.delet = delet;
+function collectorConsult(id) {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM collectors WHERE id_number = '${id}'`;
+        connection_1.connection1.query(sql, (error, results) => {
+            if (error) {
+                reject(error);
+            }
+            else {
+                resolve(results);
+            }
+        });
+    });
+}
+exports.collectorConsult = collectorConsult;

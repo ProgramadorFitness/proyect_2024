@@ -29,7 +29,8 @@ export interface Loan {
     state?: string;
 }
 
-export interface User {
+
+export interface Collector {
     id?: number;
     id_number?: number;
     name?: string;
@@ -39,8 +40,10 @@ export interface User {
     phone?: string;
     phone2?: string;
     state?: string;
+    genre?: string;
+    city?: string;
+    neighborhood?: string;
 }
-
 export interface Wallet {
     id?: number;
     value_initial?: number;

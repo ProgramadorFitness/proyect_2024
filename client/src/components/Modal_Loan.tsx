@@ -30,7 +30,7 @@ const Modal_Loan = () => {
     const [phone, setPhone] = useState("")
     const [phone2, setPhone2] = useState("")
     const [state1, setState1] = useState("activo")
-    const [wallet, setWallet] = useState("")
+    const [wallet, setWallet] = useState<string>("")
     const [id_wallet, set_Wallet] = useState("")
     const [collector, setCollector] = useState("")
     const [id_client, setIdClient] = useState("")
@@ -63,10 +63,6 @@ const Modal_Loan = () => {
         setName(value)
       }
 
-      if (name === "wallet") {
-        setWallet(value)
-      }
-
       if(name=="collector"){
         setCollector(value)
       }
@@ -79,6 +75,17 @@ const Modal_Loan = () => {
       const result = ((b*a)/100)+a
 
       setValueEnd(result.toString())
+    }
+
+    const  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const value = e.target.value;
+      setWallet(value)
+      if(wallet == "1"){
+        setCollector("Alvaro Torres")
+      }else if(wallet == "2"){
+        setCollector("Andres Palacios")
+      }
+      console.log(wallet)
     }
 
     useEffect(() => {},[]);
@@ -109,12 +116,6 @@ const Modal_Loan = () => {
 
     async function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
-
-      if(wallet=="CARTERA #1"){
-        set_Wallet("1")
-      }else{
-        set_Wallet("2")
-      }
 
       try {
         const api = new Api();
@@ -275,22 +276,23 @@ const Modal_Loan = () => {
                             <select id="wallet" 
                             
                             name="wallet"  
-                            
+                            onChange={handleSelectChange}
                             className=" rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                            <option>CARTERA #1</option>
-                            <option>CARTERA #2</option>
+                            <option value="1">CARTERA #1</option>
+                            <option value="2">CARTERA #2</option>
                             </select>
                       </div>
 
-                      <div className='px-6'>
-                      <label  className="block text-sm font-medium leading-6 text-gray-900 ">Collector</label>
-                            <select id="collector" 
-                            name="collector"  
-                            className=" rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
-                            <option>ANDRES PALACIOS</option>
-                            <option>KEVIN VILLOTA</option>
-                            </select>
-                      </div>
+                      <div className="sm:col-span-2 sm:col-start-1 ps-8">
+                        <label  className=" block text-sm font-medium leading-6 text-gray-900">Collector</label>
+                            <input 
+                            onChange={handleChange} 
+                            value={collector}
+                            type="text" 
+                            name="collector" 
+                            id="collector"  
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                        </div>
                     </div>
                     <div className="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 border-t">
                       <div className="sm:col-span">

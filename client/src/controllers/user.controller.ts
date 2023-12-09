@@ -6,6 +6,10 @@ export default class Api {
         return axios.post("http://localhost:5001/api/users/login", {username, password})
     }
 
+    public postUser(id:string, username:string, password:string){
+        return axios.post("http://localhost:5001/api/users/create", {id: id, username :username, password: password})
+    }
+
     public getClients(){
         //return axios.get("http://localhost:5001/api/clients/list")
         const token =  localStorage.getItem('token')
@@ -26,8 +30,8 @@ export default class Api {
         return axios.post("http://localhost:5001/api/loans/create", {id_client:id_client, value_initial:value_initial, value_end:value_end, interest:interest, state:state, id_wallet:id_wallet})
     }
 
-    public getUsers(){
-        return axios.get("http://localhost:5001/api/users/list")
+    public getCollectors(){
+        return axios.get("http://localhost:5001/api/collectors/list")
     }
 
     public getWallets(){
@@ -48,6 +52,10 @@ export default class Api {
 
     public getClientsIdent(id:string){
         return axios.get(`http://localhost:5001/api/clients/ident/${id}`)
+    }
+
+    public getCollectorsid(id:string){
+        return axios.get(`http://localhost:5001/api/collectors/id/${id}`)
     }
 
     public postClient(
@@ -75,5 +83,30 @@ export default class Api {
         phone2:phone2,
         state:state1})
     }
+
+    public postCollector(
+        id:string,
+        name:string,
+        lastName:string,
+        address:string,
+        genre:string,
+        email:string,
+        city:string,
+        neigt:string,
+        phone:string,
+        state1:string){
+        return axios.post("http://localhost:5001/api/collectors/create",{
+        id_number:id,
+        name:name,
+        lastName:lastName,
+        address:address,
+        genre:genre,
+        email:email,
+        city:city,
+        neighborhood:neigt,
+        phone:phone,
+        state:state1})
+    }
+
 
 }
