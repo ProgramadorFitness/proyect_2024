@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ClientsConsult = exports.create = exports.list = void 0;
+exports.ClientsConsult = exports.update = exports.create = exports.One = exports.list = void 0;
 const connection_1 = require("../db/connection");
 const clients_1 = __importDefault(require("../models/clients"));
 const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -25,6 +25,17 @@ const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.list = list;
+const One = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const clients = yield clients_1.default.findOne({ where: { id: id } });
+        return res.status(200).json(clients);
+    }
+    catch (error) {
+        return res.status(500).json({ "message": "Hubo un error", "error": error });
+    }
+});
+exports.One = One;
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield clients_1.default.create(Object.assign({}, req.body));
@@ -36,6 +47,26 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.create = create;
+const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { body } = req;
+    try {
+        const client = yield clients_1.default.findByPk(id);
+        if (client) {
+            yield client.update(body);
+            return res.status(200).json({ "message": "Client update" });
+        }
+        else {
+            res.status(404).json({
+                msg: "No existe este cliente"
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ "message": "Hubo un error", "error": error });
+    }
+});
+exports.update = update;
 function ClientsConsult(id) {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM clients WHERE id_number LIKE '%${id}%'`;

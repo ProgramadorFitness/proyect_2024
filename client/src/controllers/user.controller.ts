@@ -16,6 +16,38 @@ export default class Api {
         return axios.get("http://localhost:5001/api/clients/list", {headers:{authorization : `Bearer ${token}` }} )
     }
 
+    public getClientsId(id:number){
+        //return axios.get("http://localhost:5001/api/clients/list")
+        //const token =  localStorage.getItem('token')
+        return axios.get(`http://localhost:5001/api/clients/One/${id}`)
+    }
+
+    public updateClients(id:string,
+        id_number:string,
+        name:string,
+        lastName:string,
+        address:string,
+        genre:string,
+        email:string,
+        city:string,
+        neigt:string,
+        phone:string,
+        phone2:string,
+        state1:string){
+        return axios.put(`http://localhost:5001/api/clients/update/${id}`,
+        {id_number:id_number,
+        name:name,
+        lastName:lastName,
+        address:address,
+        genre:genre,
+        email:email,
+        city:city,
+        neighborhood:neigt,
+        phone:phone,
+        phone2:phone2,
+        state:state1})
+    }
+
     public postToken(token: string | null){
         return axios.post("http://localhost:5001/api/validate",  {headers:{authorization : `Bearer ${token}` }})
         //return axios.defaults.headers.post['Authorization'] = token
