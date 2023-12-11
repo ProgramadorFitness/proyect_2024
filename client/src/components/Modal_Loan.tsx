@@ -3,6 +3,7 @@ import { Client } from '../models/models';
 import Api from '../controllers/user.controller';
 import { useAuth } from '../auth/AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import { FaUndo } from 'react-icons/fa';
 
 interface State {
   client: Client | null
@@ -34,6 +35,13 @@ const Modal_Loan = () => {
     const [id_wallet, set_Wallet] = useState("")
     const [collector, setCollector] = useState("")
     const [id_client, setIdClient] = useState("")
+    const [paymentF, setPaymentF] = useState("")
+    const [startDate, setStart] = useState("")
+    const [finishDate, setFinish] = useState("")
+    const [dues, setDues] = useState("")
+    const [duesValue, setDuesValue] = useState("")
+
+
     const auth = useAuth();
     const goTo = useNavigate();
 
@@ -67,19 +75,68 @@ const Modal_Loan = () => {
         setCollector(value)
       }
 
+      if(name == "startDate"){
+        setStart(value)
+      }
+
+      if(name == "finishDate"){
+        setFinish(value)
+      }
+
      
       getClients();
       
+    }
+
+    function calculate (){
       const a  = +valueInicial;
       const b  = +interest;
       const result = ((b*a)/100)+a
 
       setValueEnd(result.toString())
+
+      const date1 = new Date(startDate)
+      const date2 = new Date(finishDate)
+
+      const diferencia = date1.getTime() - date2.getTime()
+      const diasdif = (diferencia /1000/60/60/24) * -1
+      console.log(diasdif)
+
+      const domingos = diasdif/30
+      let diasefectivos = diasdif-(domingos*4)
+      const ve = +valueEnd
+      
+      console.log(diasefectivos)
+
+      if(paymentF == "diario"){
+        diasefectivos = Math.round(diasefectivos)
+        const dv = Math.round(ve / diasefectivos)
+        setDuesValue(String(dv))
+        setDues(String(diasefectivos))
+      }else if(paymentF == "semanal"){
+        diasefectivos = Math.round(diasefectivos/6)
+        const dv = Math.round(ve / diasefectivos)
+        setDuesValue(String(dv))
+        setDues(String(diasefectivos))
+      }else if(paymentF == "quincenal"){
+        diasefectivos = Math.round(diasefectivos/13)
+        const dv = Math.round(ve / diasefectivos)
+        setDuesValue(String(dv))
+        setDues(String(diasefectivos))
+      }else{
+        diasefectivos = Math.round(diasefectivos/26)
+        const dv = Math.round(ve / diasefectivos)
+        setDuesValue(String(dv))
+        setDues(String(diasefectivos))
+      }
     }
 
     const  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       const value = e.target.value;
       setWallet(value)
+      setPaymentF(value)
+      //setStart(value)
+      //console.log(startDate)
       if(wallet == "1"){
         setCollector("Alvaro Torres")
       }else if(wallet == "2"){
@@ -317,6 +374,64 @@ const Modal_Loan = () => {
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
                         </div>
 
+                        <div >
+                      <label  className="block text-sm font-medium leading-6 text-gray-900">Payment Frequency</label>
+                            <select id="paymentF" 
+                            value={paymentF}
+                            name="paymentF"  
+                            onChange={handleSelectChange}
+                            className=" rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                            <option value="diario">DIARIO</option>
+                            <option value="semanal">SEMANAL</option>
+                            <option value="quincenal">QUINCENAL</option>
+                            <option value="mensual">MENSUAL</option>
+                            </select>
+                      </div>
+
+                        <div className="sm:col-span">
+                            <label className="block text-sm font-medium leading-6 text-gray-900">Start Loan</label>
+                            <input 
+                            type="date" 
+                            name="startDate" 
+                            id="startDate"
+                            onChange={handleChange} 
+                            value={startDate} 
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                        </div>
+
+                        <div className="sm:col-span">
+                            <label className="block text-sm font-medium leading-6 text-gray-900">Finish Loan</label>
+                            <input 
+                            type="date" 
+                            name="finishDate" 
+                            id="finishDate"
+                            onChange={handleChange} 
+                            value={finishDate} 
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                        </div>
+
+                        <div className="sm:col-span">
+                            <label className="block text-sm font-medium leading-6 text-gray-900">Dues</label>
+                            <input 
+                            type="number" 
+                            name="dues" 
+                            id="dues"
+                            onChange={handleChange} 
+                            value={dues} 
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                        </div>
+
+                        <div className="sm:col-span">
+                            <label className="block text-sm font-medium leading-6 text-gray-900">Dues Value</label>
+                            <input 
+                            type="number" 
+                            name="duesValue" 
+                            id="duesValue" 
+                            onChange={handleChange} 
+                            value={duesValue}
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                        </div>
+
                         <div className="sm:col-span">
                             <label className="block text-sm font-medium leading-6 text-gray-900">Value End</label>
                             <input 
@@ -326,18 +441,23 @@ const Modal_Loan = () => {
                             onChange={handleChange} 
                             value={valueEnd}
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
-                        </div>
+                        </div >
                     </div>
                     <div className='pt-6 sm:col-span-3 flex overflow-y-auto'> 
-                        <div className=''>
-                            <button className="  px-8 block text-black bg-red-300 hover:bg-red-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-300 dark:hover:bg-red-400 dark:focus:ring-red-400" type="button"
-                            onClick={() => setShowModal(false)}
-                            >Cancel</button>
+                    <div className=''>
+                            <button className="  px-8 block text-black bg-yellow-300 hover:bg-yellow-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-yellow-300 dark:hover:bg-yellow-400 dark:focus:ring-yellow-400" type="button"
+                            onClick={calculate}
+                            >Calculate</button>
                         </div>
                         <div className='px-8'>
                             <button className="  px-8 block text-black bg-blue-300 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:ring-blue-400" type="button"
                             onClick={handleSubmit}
                             >Save</button>
+                        </div>
+                        <div className=''>
+                            <button className="  px-8 block text-black bg-red-300 hover:bg-red-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-300 dark:hover:bg-red-400 dark:focus:ring-red-400" type="button"
+                            onClick={() => setShowModal(false)}
+                            >Cancel</button>
                         </div>
                     </div>
                 </form>

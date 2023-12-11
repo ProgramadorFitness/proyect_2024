@@ -128,6 +128,3 @@ class Server {
 
 export default Server
 
-function multer(arg0: { dest: string; }) {
-    throw new Error('Function not implemented.');
-}

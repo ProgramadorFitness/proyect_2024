@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Client } from '../models/models';
 import Api from '../controllers/user.controller';
+import { FaEdit } from 'react-icons/fa';
 
 interface Props {
     data: Client[]
@@ -196,7 +197,7 @@ const Table_Client = ({data}: Props) => {
     className="font-medium text-blue-600 dark:text-blue-500 hover:underline" type="button"
     onClick={()=>getClientsIdent(item.id || null)}
     >
-        Edit Client
+        Edit <FaEdit className="h-8"/> 
     </button>
 
     {showModal ? (

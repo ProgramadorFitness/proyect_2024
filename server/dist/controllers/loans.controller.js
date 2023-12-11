@@ -48,7 +48,7 @@ const delet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.delet = delet;
 function loansConsult() {
     return new Promise((resolve, reject) => {
-        const sql = 'Select loans.id, clients.name, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest from loans inner join clients on loans.id_client = clients.id ';
+        const sql = 'Select loans.id, clients.name, clients.lastName, clients.email, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest from loans inner join clients on loans.id_client = clients.id ';
         connection_1.connection1.query(sql, (error, results) => {
             if (error) {
                 reject(error);

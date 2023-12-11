@@ -145,6 +145,3 @@ class Server {
     }
 }
 exports.default = Server;
-function multer(arg0) {
-    throw new Error('Function not implemented.');
-}
