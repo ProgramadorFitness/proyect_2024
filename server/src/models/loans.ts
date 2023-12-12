@@ -9,20 +9,21 @@ const Loan = sequelize.define('loan', {
     },
 
     id_client:{
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER,
+        
     },
 
     value_initial: {
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER
     }
     ,
 
     value_end:{
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER
     },
 
     interest: {
-        type: DataTypes.STRING
+        type: DataTypes.INTEGER
     },
 
     state:{
@@ -30,6 +31,21 @@ const Loan = sequelize.define('loan', {
     },
 
     id_wallet: {
+        type: DataTypes.STRING
+    },
+    startLoan: {
+        type: DataTypes.STRING
+    },
+    finishLoan: {
+        type: DataTypes.STRING
+    },
+    dues: {
+        type: DataTypes.INTEGER
+    },
+    duesValue: {
+        type: DataTypes.INTEGER
+    },
+    paymentF: {
         type: DataTypes.STRING
     }
 }

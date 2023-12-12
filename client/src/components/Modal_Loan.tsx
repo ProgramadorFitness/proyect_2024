@@ -42,8 +42,8 @@ const Modal_Loan = () => {
     const [duesValue, setDuesValue] = useState("")
 
 
-    const auth = useAuth();
-    const goTo = useNavigate();
+    /*const auth = useAuth();
+    const goTo = useNavigate();*/
 
     const [data, setData] = useState<Client[]>()
 
@@ -85,28 +85,37 @@ const Modal_Loan = () => {
 
      
       getClients();
+
+      if(wallet == "1"){
+        setCollector("Alvaro Torres")
+      }else if(wallet == "2"){
+        setCollector("Andres Palacios")
+      }
       
     }
 
     function calculate (){
       const a  = +valueInicial;
       const b  = +interest;
-      const result = ((b*a)/100)+a
-
-      setValueEnd(result.toString())
 
       const date1 = new Date(startDate)
-      const date2 = new Date(finishDate)
+      const date2 = new Date(finishDate) 
 
       const diferencia = date1.getTime() - date2.getTime()
       const diasdif = (diferencia /1000/60/60/24) * -1
-      console.log(diasdif)
+      console.log(startDate)
+
+      const interesreal = ((diasdif/30)* +b)
+
+      const result = ((interesreal*a)/100)+a
+
 
       const domingos = diasdif/30
       let diasefectivos = diasdif-(domingos*4)
-      const ve = +valueEnd
+      const ve = Math.round(+result)
       
       console.log(diasefectivos)
+      setValueEnd(ve.toString())
 
       if(paymentF == "diario"){
         diasefectivos = Math.round(diasefectivos)
@@ -129,14 +138,26 @@ const Modal_Loan = () => {
         setDuesValue(String(dv))
         setDues(String(diasefectivos))
       }
+
+      getClients();
+
+      if(wallet == "1"){
+        setCollector("Alvaro Torres")
+      }else if(wallet == "2"){
+        setCollector("Andres Palacios")
+      }
     }
 
     const  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      const value = e.target.value;
-      setWallet(value)
-      setPaymentF(value)
-      //setStart(value)
-      //console.log(startDate)
+      const {name, value} = e.target;
+    
+      if(name == "wallet"){
+        setWallet(value)
+      }else if(name == "paymentF"){
+        setPaymentF(value)
+      }
+      
+      
       if(wallet == "1"){
         setCollector("Alvaro Torres")
       }else if(wallet == "2"){
@@ -176,13 +197,11 @@ const Modal_Loan = () => {
 
       try {
         const api = new Api();
-        const response = await (await (api.postLoans(id_client, valueInicial, valueEnd, interest, state1, id_wallet))).statusText
+        const response = await (await (api.postLoans(
+          id_client, valueInicial, valueEnd, interest, state1, wallet, startDate, 
+          finishDate, dues, duesValue, paymentF))).data
         console.log(response)
   
-        if(response == 'OK'){
-           auth.isAuthenticated = true
-           goTo("/client");
-        }
       } catch (error) {
         console.log(error);
       }
@@ -231,12 +250,12 @@ const Modal_Loan = () => {
                             name="name" 
                             id="name"  
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            ></input>
+                            disabled></input>
                         </div>
 
                         <div className="">
                         <label className="block text-sm font-medium leading-6 text-gray-900">Last name</label>
-                            <input 
+                            <input disabled
                             onChange={handleChange} 
                             value={lastName}
                             type="text" 
@@ -247,7 +266,7 @@ const Modal_Loan = () => {
 
                         <div className="">
                         <label  className="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-                            <input 
+                            <input disabled
                             onChange={handleChange} 
                             value={email}
                             id="email" 
@@ -257,7 +276,7 @@ const Modal_Loan = () => {
                         </div>
                         <div className="">
                         <label  className="block text-sm font-medium leading-6 text-gray-900">Genre</label>
-                        <select 
+                        <select disabled
                             onChange={handleSelectChange}
                             id="genre" 
                             name="genre"
@@ -270,7 +289,7 @@ const Modal_Loan = () => {
 
                         <div className="">
                         <label  className="block text-sm font-medium leading-6 text-gray-900">Street address</label>
-                            <input 
+                            <input disabled
                             onChange={handleChange} 
                             value={address}
                             type="text" 
@@ -281,7 +300,7 @@ const Modal_Loan = () => {
 
                         <div className="sm:col-span-2 sm:col-start-1">
                         <label  className="block text-sm font-medium leading-6 text-gray-900">City</label>
-                            <input 
+                            <input disabled
                             onChange={handleChange} 
                             value={city}
                             type="text" 
@@ -292,7 +311,7 @@ const Modal_Loan = () => {
 
                         <div className="">
                         <label   className="block text-sm font-medium leading-6 text-gray-900">Neighborhood</label>
-                            <input 
+                            <input disabled
                             onChange={handleChange} 
                             value={neigt}
                             type='text' 
@@ -303,7 +322,7 @@ const Modal_Loan = () => {
 
                         <div className="">
                         <label  className="block text-sm font-medium leading-6 text-gray-900">Phone</label>
-                            <input 
+                            <input disabled
                             onChange={handleChange} 
                             value={phone}
                             type="number" 
@@ -314,7 +333,7 @@ const Modal_Loan = () => {
 
                         <div className="sm:col-span">
                         <label  className="block text-sm font-medium leading-6 text-gray-900">Phone #2</label>
-                            <input 
+                            <input disabled
                             onChange={handleChange} 
                             value={phone2}
                             type="number" 
@@ -333,7 +352,7 @@ const Modal_Loan = () => {
                             <select id="wallet" 
                             value={wallet}
                             name="wallet"  
-                            onChange={handleSelectChange}
+                            onChangeCapture={handleSelectChange}
                             className=" rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                             <option value="1">CARTERA #1</option>
                             <option value="2">CARTERA #2</option>
@@ -342,7 +361,7 @@ const Modal_Loan = () => {
 
                       <div className="sm:col-span-2 sm:col-start-1 ps-8">
                         <label  className=" block text-sm font-medium leading-6 text-gray-900">Collector</label>
-                            <input 
+                            <input disabled
                             onChange={handleChange} 
                             value={collector}
                             type="text" 
@@ -412,7 +431,7 @@ const Modal_Loan = () => {
 
                         <div className="sm:col-span">
                             <label className="block text-sm font-medium leading-6 text-gray-900">Dues</label>
-                            <input 
+                            <input disabled
                             type="number" 
                             name="dues" 
                             id="dues"
@@ -423,7 +442,7 @@ const Modal_Loan = () => {
 
                         <div className="sm:col-span">
                             <label className="block text-sm font-medium leading-6 text-gray-900">Dues Value</label>
-                            <input 
+                            <input disabled
                             type="number" 
                             name="duesValue" 
                             id="duesValue" 
@@ -434,7 +453,7 @@ const Modal_Loan = () => {
 
                         <div className="sm:col-span">
                             <label className="block text-sm font-medium leading-6 text-gray-900">Value End</label>
-                            <input 
+                            <input disabled
                             type="string" 
                             name="value_end" 
                             id="value_end" 

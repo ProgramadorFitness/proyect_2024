@@ -70,7 +70,7 @@ class Server {
             }
         } )
 
-        //--Login-Sql
+        //--Loan-Sql
             this.app.get("/api/loans/listjoin", async (req: Request, res: Response, any) => {
                 try {
                     const results= await loansConsult();

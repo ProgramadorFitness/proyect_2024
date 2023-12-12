@@ -9,9 +9,9 @@ interface Props {
 const Table_Loan = ({data}: Props) => {
   return (
     <div className='overflow-x-auto shadow-md sm:rounded-lg'>
-    <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300'>
-        <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
-            <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400">
+    <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
+        <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400 ">
+            <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400 overflow-y-auto">
                 <th>
                     <div className="flex items-center">
                         <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -19,6 +19,7 @@ const Table_Loan = ({data}: Props) => {
                     </div>
                 </th>
                 <th scope="col" className="px-6 py-3">ID</th>
+                <th scope="col" className="px-6 py-3">ID_WALLET</th>
                 <th scope="col" className="px-6 py-3">NAME</th>
                 <th scope="col" className="px-6 py-3">ID_NUMBER</th>
                 <th scope="col" className="px-6 py-3">ADDRESS</th>
@@ -28,6 +29,11 @@ const Table_Loan = ({data}: Props) => {
                 <th scope="col" className="px-6 py-3">VALUE INITIAL</th>
                 <th scope="col" className="px-6 py-3">VALUE END</th>
                 <th scope="col" className="px-6 py-3">INTEREST</th>
+                <th scope="col" className="px-6 py-3">PAYMENT FREQUENCY</th>
+                <th scope="col" className="px-6 py-3">START LOAN</th>
+                <th scope="col" className="px-6 py-3">FINISH LOAN</th>
+                <th scope="col" className="px-6 py-3">DUES</th>
+                <th scope="col" className="px-6 py-3">DUES VALUE</th>
                 <th scope="col" className="px-6 py-3">ACTION</th>
 
             </thead>
@@ -41,6 +47,7 @@ const Table_Loan = ({data}: Props) => {
                         </div>
                     </td>
                     <td className="px-6 py-4">{item.id}</td>
+                    <td className="px-6 py-4">{item.id_wallet}</td> 
 
                     <th scope='row' className='flex items-center px-6 py-4 text-slate-800 whitespace-nowrap dark:text-black'>
                     <div className="ps-3">
@@ -57,6 +64,11 @@ const Table_Loan = ({data}: Props) => {
                 <td className="px-6 py-4">{item.value_initial}</td>
                 <td className="px-6 py-4">{item.value_end}</td>
                 <td className="px-6 py-4">{item.interest}</td>
+                <td className="px-6 py-4">{item.paymentF}</td>
+                <td className="px-6 py-4">{item.startLoan}</td>
+                <td className="px-6 py-4">{item.finishLoan}</td>
+                <td className="px-6 py-4">{item.dues}</td>
+                <td className="px-6 py-4">{item.duesValue}</td>
                 <td className="px-6 py-4">
                 <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit Loan</a>
                 </td>

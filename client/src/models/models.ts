@@ -15,9 +15,15 @@ export interface Client {
 
 export interface Loan {
     id?: number;
+    id_wallet?: number;
     value_initial?: number;
     value_end?: number;
     interest?: number;
+    startLoan?: string;
+    finishLoan?: string;
+    dues?: number;
+    duesValue?: number;
+    paymentF?: string;
     id_client?: number;
     id_number?: number;
     name?: string;

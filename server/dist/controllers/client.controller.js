@@ -69,7 +69,7 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.update = update;
 function ClientsConsult(id) {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM clients WHERE id_number LIKE '%${id}%'`;
+        const sql = `SELECT * FROM clients WHERE id_number LIKE '%${id}%' LIMIT 1`;
         connection_1.connection1.query(sql, (error, results) => {
             if (error) {
                 reject(error);

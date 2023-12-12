@@ -91,7 +91,7 @@ class Server {
                 res.status(500).send('Error interno del servidor');
             }
         }));
-        //--Login-Sql
+        //--Loan-Sql
         this.app.get("/api/loans/listjoin", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const results = yield (0, loans_controller_1.loansConsult)();

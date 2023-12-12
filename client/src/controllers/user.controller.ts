@@ -58,8 +58,31 @@ export default class Api {
         return axios.get("http://localhost:5001/api/loans/list")
     }
 
-    public postLoans(id_client:string, value_initial:string, value_end:string, interest:string, state:string, id_wallet:string){
-        return axios.post("http://localhost:5001/api/loans/create", {id_client:id_client, value_initial:value_initial, value_end:value_end, interest:interest, state:state, id_wallet:id_wallet})
+    public postLoans(
+        id_client:string,
+        value_initial:string,
+        value_end:string, 
+        interest:string, 
+        state:string,
+        id_wallet:string,
+        startDate:string,
+        finishDate:string,
+        dues:string,
+        duesValue:string,
+        paymentF: string){
+        return axios.post("http://localhost:5001/api/loans/create", {
+            id_client:id_client, 
+            value_initial:value_initial, 
+            value_end:value_end, 
+            interest:interest, 
+            state:state, 
+            id_wallet:id_wallet,
+            startLoan:startDate,
+            finishLoan:finishDate,
+            dues:dues,
+            duesValue:duesValue,
+            paymentF:paymentF
+        })
     }
 
     public getCollectors(){

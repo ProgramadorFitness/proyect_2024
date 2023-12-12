@@ -14,7 +14,7 @@ const Table_Wallets = ({data}: Props) => {
   return (
 
           <div className='overflow-x-auto shadow-md sm:rounded-lg'>
-    <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300'>
+    <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
         <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
             <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400">
                 <th>
