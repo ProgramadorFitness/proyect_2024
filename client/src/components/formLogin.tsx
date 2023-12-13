@@ -20,7 +20,7 @@ const FormLogin = () => {
       const { name, value } = e.target as HTMLInputElement;
       if (name === "username") {
         setUsername(value);
-        console.log(username)
+        //console.log(username)
       }
       if (name === "password") {
         setPassword(value);
@@ -34,7 +34,7 @@ const FormLogin = () => {
       try {
         const api = new Api();
         const token = await (await (api.getLogin(username, password))).data
-        console.log(token)
+        //console.log(token)
 
         if(token){
           localStorage.setItem('token', token)

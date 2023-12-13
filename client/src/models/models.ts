@@ -22,6 +22,7 @@ export interface Loan {
     startLoan?: string;
     finishLoan?: string;
     dues?: number;
+    duesPaid?: number;
     duesValue?: number;
     paymentF?: string;
     id_client?: number;
@@ -64,4 +65,10 @@ export interface Wallet {
     phone?: string;
     phone2?: string;
     state?: string;
+    startLoan?: string;
+    finishLoan?: string;
+    dues?: number;
+    duesPaid?: number;
+    duesValue?: number;
+    paymentF?: string;
 }

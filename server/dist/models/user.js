@@ -23,6 +23,10 @@ const User = connection_1.default.define('user', {
     password: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
+    },
+    type: {
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false
     }
 });
 exports.default = User;

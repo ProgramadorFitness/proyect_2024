@@ -30,8 +30,8 @@ async function getWallets(id1:unknown ) {
       }
 
   return (
-    <div className='overflow-x-auto shadow-md sm:rounded-lg'>
-    <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300'>
+    <div className='overflow-x-auto shadow-md sm:rounded-lg overflow-y-auto'>
+    <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
         <ul className="flex flex-wrap -mb-px">
             {data?.map((item) => (
                 <li key={item.id} className="me-2">

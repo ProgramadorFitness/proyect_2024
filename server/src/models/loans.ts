@@ -42,6 +42,7 @@ const Loan = sequelize.define('loan', {
     dues: {
         type: DataTypes.INTEGER
     },
+
     duesValue: {
         type: DataTypes.INTEGER
     },

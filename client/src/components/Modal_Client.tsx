@@ -98,7 +98,14 @@ const Modal_Client = () => {
           phone,
           phone2,
           state1))).data
-        console.log(response)
+        //console.log(response)
+
+        if(response.ok){
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong className="font-bold">Holy smokes!</strong>
+            <span className="block sm:inline">Something seriously bad happened.</span>
+            </div>
+        }
   
        
       } catch (error) {
@@ -162,8 +169,9 @@ const Modal_Client = () => {
                             onChange={handleSelectChange}
                             id="genre" 
                             name="genre"
-                            value={genre}  
+                            //value={genre}  
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                            <option >Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             </select>

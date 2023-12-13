@@ -87,7 +87,7 @@ const Table_Client = ({data}: Props) => {
       async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
     
-        console.log("hola")
+        //console.log("hola")
         
         try {
             const api = new Api();
@@ -102,7 +102,7 @@ const Table_Client = ({data}: Props) => {
               phone,
               phone2,
               state1))).data
-            console.log(response)
+           // console.log(response)
       
            
           } catch (error) {
@@ -115,10 +115,10 @@ const Table_Client = ({data}: Props) => {
                         const id = id1 as number
 
                             const response = (await api.getClientsId(id)).data
-                            console.log(response['id'])
+                            //console.log(response['id'])
                         
                         
-                           console.log(String(data1?.map((item)=>(item.name))))
+                           //console.log(String(data1?.map((item)=>(item.name))))
 
                         
             
@@ -203,7 +203,7 @@ const Table_Client = ({data}: Props) => {
     {showModal ? (
         <>
         <div className=' p-8 fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex justify-center overflow-y-auto overflow-y-auto'>
-            <div className='bg-slate-400  rounded flex flex-col items-center gap-5 overflow-y-auto overflow-y-auto'>
+            <div className='bg-slate-400  rounded flex flex-col items-center gap-5 overflow-y-auto'>
                 <div className="p-8">
                 <form >
                     <div className="border-b border-gray-900/10  " >
@@ -246,8 +246,9 @@ const Table_Client = ({data}: Props) => {
                             onChange={handleSelectChange}
                             id="genre" 
                             name="genre"
-                            value={genre}  
+                            //value={genre}  
                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                             <option >Select</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             </select>

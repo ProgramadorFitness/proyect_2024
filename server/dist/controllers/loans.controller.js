@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InsertLoan = exports.loansConsult = exports.delet = exports.create = exports.list = void 0;
+exports.InsertLoan = exports.loansConsultId = exports.loansConsult = exports.delet = exports.create = exports.list = void 0;
 const loans_1 = __importDefault(require("../models/loans"));
 const connection_1 = require("../db/connection");
 const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -48,7 +48,7 @@ const delet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.delet = delet;
 function loansConsult() {
     return new Promise((resolve, reject) => {
-        const sql = 'Select id_wallet, loans.id, clients.name, clients.lastName, clients.email, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest, loans.startLoan, loans.finishLoan, loans.dues, loans.duesValue, loans.paymentF from loans inner join clients on loans.id_client = clients.id ';
+        const sql = 'Select id_wallet, loans.id, clients.id as id_client, clients.name, clients.lastName, clients.email, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest, loans.startLoan, loans.finishLoan, loans.dues, loans.duesValue, loans.paymentF from loans inner join clients on loans.id_client = clients.id ';
         connection_1.connection1.query(sql, (error, results) => {
             if (error) {
                 reject(error);
@@ -60,6 +60,20 @@ function loansConsult() {
     });
 }
 exports.loansConsult = loansConsult;
+function loansConsultId(id) {
+    return new Promise((resolve, reject) => {
+        const sql = `Select id_wallet , loans.id as id_loan, clients.genre as genre, clients.id as id_client, clients.neighborhood, clients.name as name, clients.lastName,  clients.city, clients.email, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest, loans.startLoan, loans.finishLoan, loans.dues, loans.duesValue, loans.paymentF, payments.dues as duesPay from loans inner join clients inner join payments on loans.id_client = clients.id and payments.id_loan = loans.id and loans.id = ${id}`;
+        connection_1.connection1.query(sql, (error, results) => {
+            if (error) {
+                reject(error);
+            }
+            else {
+                resolve(results[0]);
+            }
+        });
+    });
+}
+exports.loansConsultId = loansConsultId;
 function InsertLoan() {
     return new Promise((resolve, reject) => {
         const sql = '';

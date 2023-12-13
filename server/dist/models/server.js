@@ -53,6 +53,8 @@ const wallets_controller_1 = require("../controllers/wallets.controller");
 const loans_controller_1 = require("../controllers/loans.controller");
 const client_controller_1 = require("../controllers/client.controller");
 const collectors_controller_1 = require("../controllers/collectors.controller");
+const payments_routes_1 = __importDefault(require("../routes/payments.routes"));
+const payment_1 = __importDefault(require("./payment"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -79,6 +81,7 @@ class Server {
         this.app.use("/api/wallets", wallets_routes_1.default);
         this.app.use("/api/loans", loans_routes_1.default);
         this.app.use("/api/collectors", collectors_routes_1.default);
+        this.app.use("/api/payments", payments_routes_1.default);
         //--Walltes-Sql
         this.app.get("/api/wallets/listjoin/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
@@ -95,6 +98,18 @@ class Server {
         this.app.get("/api/loans/listjoin", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const results = yield (0, loans_controller_1.loansConsult)();
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Loan-ID-Sql
+        this.app.get("/api/loans/listjoin/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, loans_controller_1.loansConsultId)(id));
                 res.json(results);
             }
             catch (error) {
@@ -136,6 +151,7 @@ class Server {
                 yield wallets_1.default.sync();
                 yield collectors_1.default.sync();
                 yield user_1.default.sync();
+                yield payment_1.default.sync();
                 console.log('Connection has been established successfully');
             }
             catch (error) {

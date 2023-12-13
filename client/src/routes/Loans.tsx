@@ -23,6 +23,7 @@ useEffect(() => {
         const api = new Api()
         const response = (await api.getLoansjoin()).data
         setState({loans:null, listLoans:response})
+        console.log(state.listLoans)
     })();
 },[]);
 

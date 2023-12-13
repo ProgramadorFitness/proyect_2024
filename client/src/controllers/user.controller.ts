@@ -58,6 +58,10 @@ export default class Api {
         return axios.get("http://localhost:5001/api/loans/list")
     }
 
+    public getLoansId(id:string){
+        return axios.get(`http://localhost:5001/api/loans/listjoin/${id}`)
+    }
+
     public postLoans(
         id_client:string,
         value_initial:string,
@@ -161,6 +165,23 @@ export default class Api {
         neighborhood:neigt,
         phone:phone,
         state:state1})
+    }
+
+    public postPay(
+        id:string,
+        payment:number,
+        dues:number,
+        date:string,
+        observation:string
+    ) {
+        return axios.post("http://localhost:5001/api/payments/create", {
+            id_loan:id,
+            payment:payment,
+            dues:dues,
+            date:date,
+            observation:observation
+        })
+        
     }
 
 

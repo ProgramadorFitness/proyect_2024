@@ -14,7 +14,10 @@ const Payment = connection_1.default.define('payment', {
     id_loan: {
         type: sequelize_1.DataTypes.INTEGER
     },
-    pass: {
+    payment: {
+        type: sequelize_1.DataTypes.INTEGER
+    },
+    dues: {
         type: sequelize_1.DataTypes.INTEGER
     },
     date: {

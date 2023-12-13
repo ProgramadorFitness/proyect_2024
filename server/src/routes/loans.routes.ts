@@ -15,4 +15,7 @@ LoansRoutes.delete("/delete/:id", delet)
 //--list join
 LoansRoutes.get("/listjoin")
 
+//--list join
+LoansRoutes.get("/listjoin/:id")
+
 export default LoansRoutes

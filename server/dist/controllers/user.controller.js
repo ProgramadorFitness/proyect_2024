@@ -17,7 +17,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, username, password } = req.body;
+    const { id, username, password, type } = req.body;
     //--Validacion de usuario
     const user = yield user_1.default.findOne({ where: { username: username } });
     if (user) {
@@ -30,7 +30,8 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield user_1.default.create({
             id_collector: id,
             username: username,
-            password: hashPassword
+            password: hashPassword,
+            type: type
         });
         res.json({
             msg: 'New User' + username,

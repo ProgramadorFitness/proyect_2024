@@ -11,4 +11,6 @@ LoansRoutes.post("/create", loans_controller_1.create);
 LoansRoutes.delete("/delete/:id", loans_controller_1.delet);
 //--list join
 LoansRoutes.get("/listjoin");
+//--list join
+LoansRoutes.get("/listjoin/:id");
 exports.default = LoansRoutes;

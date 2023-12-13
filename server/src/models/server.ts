@@ -13,9 +13,11 @@ import CollectorsRoutes from '../routes/collectors.routes';
 import Collector from './collectors';
 import sequelize from '../db/connection';
 import { walletsConsult } from '../controllers/wallets.controller';
-import { loansConsult } from '../controllers/loans.controller';
+import { loansConsult, loansConsultId } from '../controllers/loans.controller';
 import { ClientsConsult } from '../controllers/client.controller';
 import { collectorConsult } from '../controllers/collectors.controller';
+import paymentsRoutes from '../routes/payments.routes';
+import Payment from './payment';
 
 
 
@@ -56,6 +58,7 @@ class Server {
         this.app.use("/api/wallets", WalletsRoutes )
         this.app.use("/api/loans", LoansRoutes )
         this.app.use("/api/collectors", CollectorsRoutes )
+        this.app.use("/api/payments", paymentsRoutes )
         
         //--Walltes-Sql
         this.app.get("/api/wallets/listjoin/:id", async (req: Request, res: Response, any) => {
@@ -81,6 +84,19 @@ class Server {
                     
                 }
             } )
+
+        //--Loan-ID-Sql
+        this.app.get("/api/loans/listjoin/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await loansConsultId(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
 
         //--Client-Sql
         this.app.get("/api/clients/ident/:id", async (req: Request, res: Response) => {
@@ -118,6 +134,7 @@ class Server {
             await Wallet.sync()
             await Collector.sync()
             await User.sync()
+            await Payment.sync()
 
             console.log('Connection has been established successfully')
         } catch (error) {

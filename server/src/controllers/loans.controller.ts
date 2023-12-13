@@ -34,13 +34,27 @@ export const delet: RequestHandler = async (req, res) => {
 
 export  function loansConsult(){
     return new Promise((resolve, reject) => {
-      const sql = 'Select id_wallet, loans.id, clients.name, clients.lastName, clients.email, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest, loans.startLoan, loans.finishLoan, loans.dues, loans.duesValue, loans.paymentF from loans inner join clients on loans.id_client = clients.id ';
+      const sql = 'Select id_wallet, loans.id, clients.id as id_client, clients.name, clients.lastName, clients.email, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest, loans.startLoan, loans.finishLoan, loans.dues, loans.duesValue, loans.paymentF from loans inner join clients on loans.id_client = clients.id ';
       
       connection1.query(sql, (error: QueryError, results:any) => {
         if (error) {
             reject(error);
           } else {
             resolve(results);
+          }
+      })
+    });
+  }
+
+  export  function loansConsultId(id:string){
+    return new Promise((resolve, reject) => {
+      const sql = `Select id_wallet , loans.id as id_loan, clients.genre as genre, clients.id as id_client, clients.neighborhood, clients.name as name, clients.lastName,  clients.city, clients.email, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest, loans.startLoan, loans.finishLoan, loans.dues, loans.duesValue, loans.paymentF, payments.dues as duesPay from loans inner join clients inner join payments on loans.id_client = clients.id and payments.id_loan = loans.id and loans.id = ${id}`;
+      
+      connection1.query(sql, (error: QueryError, results:any) => {
+        if (error) {
+            reject(error);
+          } else {
+            resolve(results[0]);
           }
       })
     });

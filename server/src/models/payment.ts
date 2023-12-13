@@ -13,7 +13,10 @@ const Payment = sequelize.define('payment', {
         type: DataTypes.INTEGER
     },
 
-    pass: {
+    payment: {
+        type: DataTypes.INTEGER
+    },
+    dues: {
         type: DataTypes.INTEGER
     },
 
