@@ -5,6 +5,8 @@ const paymentsRoutes = Router();
 
 paymentsRoutes.get("/list", list)
 
+paymentsRoutes.get("/listjoin/:id")
+
 paymentsRoutes.get("/create", create)
 
 export default paymentsRoutes

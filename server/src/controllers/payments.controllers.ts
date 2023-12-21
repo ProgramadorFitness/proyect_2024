@@ -23,3 +23,17 @@ export const create: RequestHandler = async (req: Request, res: Response) => {
         return res.status(500).json({"message": "Hubo un error", "error": error})
     }
   }
+
+  export  function payConsult(id:string){
+    return new Promise((resolve, reject) => {
+      const sql = `Select * from payments  where id = ${id}`;
+      
+      connection1.query(sql, (error: QueryError, results:any) => {
+        if (error) {
+            reject(error);
+          } else {
+            resolve(results[0]);
+          }
+      })
+    });
+  }

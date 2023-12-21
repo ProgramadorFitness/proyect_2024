@@ -18,6 +18,7 @@ import { ClientsConsult } from '../controllers/client.controller';
 import { collectorConsult } from '../controllers/collectors.controller';
 import paymentsRoutes from '../routes/payments.routes';
 import Payment from './payment';
+import { payConsult } from '../controllers/payments.controllers';
 
 
 
@@ -90,6 +91,19 @@ class Server {
             const id = req.params.id 
             try {
                 const results = (await loansConsultId(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+        //--Pay-ID-Sql
+        this.app.get("/api/payments/listjoin/:id", async (req: Request, res: Response) => {
+            const id = req.params.id
+            try {
+                const results = (await payConsult(id));
                 res.json(results)
             } catch (error) {
                 console.error('Error al realizar la consulta:', error);

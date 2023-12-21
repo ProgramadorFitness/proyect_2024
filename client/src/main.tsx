@@ -6,10 +6,12 @@ import Clients from './routes/Clients.tsx'
 import ProtectedRoute from './routes/ProtectedRoute.tsx'
 import { AuthProvider } from './auth/AuthProvider.tsx'
 import Loans from './routes/Loans.tsx'
-import Users from './routes/Users.tsx'
+import Collectors from './routes/Collectors.tsx'
 import Dashboard from './routes/Dashboard.tsx'
 import Wallets from './routes/Wallets.tsx'
 import Login from './routes/Login.tsx'
+import Payments from './routes/Payments.tsx'
+import Collections from './routes/Collections.tsx'
 
 
 const router = createBrowserRouter([
@@ -36,13 +38,21 @@ const router = createBrowserRouter([
         element: <Loans/> 
       },
       {
-        path: "/users",
-        element: <Users />,
-        },
-        {
-          path: "/dashboard",
-          element: <Dashboard/>,
-          },
+        path: "/collector",
+        element: <Collectors />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard/>,
+      },
+      {
+        path: "/payment",
+        element: <Payments/>
+      },
+      {
+        path: "/collection",
+        element: <Collections/>
+      }
     ]
 
   }

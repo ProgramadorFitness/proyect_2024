@@ -62,6 +62,10 @@ export default class Api {
         return axios.get(`http://localhost:5001/api/loans/listjoin/${id}`)
     }
 
+    public getPayId(id:string){
+        return axios.get(`http://localhost:5001/api/payments/list/${id}`)
+    }
+
     public postLoans(
         id_client:string,
         value_initial:string,

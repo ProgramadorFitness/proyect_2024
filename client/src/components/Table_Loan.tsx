@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Client, Loan } from '../models/models';
 import Api from '../controllers/user.controller';
 import { FaCashRegister, FaHandHoldingUsd } from 'react-icons/fa';
+import Table_Payments from './Table_Payments';
+import Payments from '../routes/Payments';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Props {
@@ -12,6 +15,7 @@ interface State {
     client: Client | null
     listClient: Client[]
 }
+
 
 
 const Table_Loan = ({ data }: Props) => {
@@ -44,7 +48,8 @@ const Table_Loan = ({ data }: Props) => {
     const [observation, setObser] = useState("")
     const [datePay, setDatepay] = useState("")
     const [duesPay, setDuespay] = useState("")
-    
+    const goTo = useNavigate();
+  
 
 
 
@@ -57,6 +62,14 @@ const Table_Loan = ({ data }: Props) => {
         client: null,
         listClient: []
     })
+
+    
+
+    function redirect (id_loan:unknown){
+        goTo("/payment")
+        localStorage.setItem("id_loan_temp", String(id_loan))
+        console.log(id_loan)
+    }
 
 
     function handleChange(e: React.ChangeEvent) {
@@ -240,7 +253,8 @@ const Table_Loan = ({ data }: Props) => {
                                     <>
                                         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline" type="button"
-                                            onClick={() => getClientsIdent(item.id || null)}
+                                            //onClick={() => getClientsIdent(item.id || null)}
+                                            onClick={() =>redirect(item.id || null)}
                                         >
                                             Pay <FaHandHoldingUsd className="h-8" />
                                         </button>
