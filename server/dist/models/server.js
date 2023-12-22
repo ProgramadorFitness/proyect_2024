@@ -55,6 +55,7 @@ const client_controller_1 = require("../controllers/client.controller");
 const collectors_controller_1 = require("../controllers/collectors.controller");
 const payments_routes_1 = __importDefault(require("../routes/payments.routes"));
 const payment_1 = __importDefault(require("./payment"));
+const payments_controllers_1 = require("../controllers/payments.controllers");
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -134,6 +135,30 @@ class Server {
             const id = req.params.id;
             try {
                 const results = yield (0, collectors_controller_1.collectorConsult)(id);
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--payJoinId-Sql
+        this.app.get("/api/payments/listjoin/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, payments_controllers_1.payJoinId)(id));
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--payJoin-Sql
+        this.app.get("/api/payments/list", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, payments_controllers_1.payJoin)());
                 res.json(results);
             }
             catch (error) {

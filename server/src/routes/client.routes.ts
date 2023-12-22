@@ -11,12 +11,11 @@ ClientRoutes.get("/list",validateToken, list);
 ClientRoutes.get("/One/:id", One);
 
 //--Create
-ClientRoutes.post("/create", create)
+ClientRoutes.post("/create", create);
 
 //--list-identication
-ClientRoutes.get("/ident/:id")
+ClientRoutes.get("/ident/:id");
 
 //--update
-ClientRoutes.put("/update/:id", update)
-
+ClientRoutes.put("/update/:id", update);
 export default ClientRoutes

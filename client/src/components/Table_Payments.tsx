@@ -49,12 +49,13 @@ const Table_Payments = ({data}: Props) => {
                 <td className="px-6 py-4">{item.dues}</td>
                 <td className="px-6 py-4">{item.duesPaid}</td>
                 <td className="px-6 py-4">{item.duesValue}</td>
+                <td className="px-6 py-4">{item.duesRealPay}</td>
                 <td className="px-6 py-4">{item.outBalance}</td>
-                <td className="px-6 py-4">{item.realDatePay}</td>
+                <td className="px-6 py-4">{item.realDatePay?.substring(0,10)}</td>
                 <td className="px-6 py-4">{item.datePay?.substring(0,10)}</td>
-                <td className="px-6 py-4">{item.finishLoan?.substring(0,10)}</td>
-                <td className="px-6 py-4">
-                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit Loan</a>
+                <td className="px-6 py-4 flex">
+                <a href="#" className="pr-4 font-medium text-blue-600 dark:text-blue-500 hover:underline">Pay</a>
+                <a href="#" className="p-2 border-l  border-indigo-500 font-medium text-yellow-600 dark:text-yellow-500 hover:underline">Pay of Part</a>
                 </td>
                 </tr>
                 ))}

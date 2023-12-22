@@ -21,6 +21,10 @@ export default class Api {
         //const token =  localStorage.getItem('token')
         return axios.get(`http://localhost:5001/api/clients/One/${id}`)
     }
+    public postToken(token: string | null){
+        return axios.post("http://localhost:5001/api/validate",  {headers:{authorization : `Bearer ${token}` }})
+        //return axios.defaults.headers.post['Authorization'] = token
+    }
 
     public updateClients(id:string,
         id_number:string,
@@ -48,10 +52,7 @@ export default class Api {
         state:state1})
     }
 
-    public postToken(token: string | null){
-        return axios.post("http://localhost:5001/api/validate",  {headers:{authorization : `Bearer ${token}` }})
-        //return axios.defaults.headers.post['Authorization'] = token
-    }
+    
 
     
     public getLoans(){
@@ -60,10 +61,6 @@ export default class Api {
 
     public getLoansId(id:string){
         return axios.get(`http://localhost:5001/api/loans/listjoin/${id}`)
-    }
-
-    public getPayId(id:string){
-        return axios.get(`http://localhost:5001/api/payments/list/${id}`)
     }
 
     public postLoans(
@@ -91,6 +88,14 @@ export default class Api {
             duesValue:duesValue,
             paymentF:paymentF
         })
+    }
+    
+    public getPayId(id:string){
+        return axios.get(`http://localhost:5001/api/payments/listjoin/${id}`)
+    }
+
+    public getPay(){
+        return axios.get(`http://localhost:5001/api/payments/list`)
     }
 
     public getCollectors(){

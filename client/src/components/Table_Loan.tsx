@@ -67,6 +67,7 @@ const Table_Loan = ({ data }: Props) => {
 
     function redirect (id_loan:unknown){
         goTo("/payment")
+        
         localStorage.setItem("id_loan_temp", String(id_loan))
         console.log(id_loan)
     }

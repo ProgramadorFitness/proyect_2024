@@ -18,7 +18,7 @@ import { ClientsConsult } from '../controllers/client.controller';
 import { collectorConsult } from '../controllers/collectors.controller';
 import paymentsRoutes from '../routes/payments.routes';
 import Payment from './payment';
-import { payConsult } from '../controllers/payments.controllers';
+import { payJoin, payJoinId } from '../controllers/payments.controllers';
 
 
 
@@ -99,19 +99,6 @@ class Server {
             }
         } )
 
-        //--Pay-ID-Sql
-        this.app.get("/api/payments/listjoin/:id", async (req: Request, res: Response) => {
-            const id = req.params.id
-            try {
-                const results = (await payConsult(id));
-                res.json(results)
-            } catch (error) {
-                console.error('Error al realizar la consulta:', error);
-                res.status(500).send('Error interno del servidor');
-                
-            }
-        } )
-
         //--Client-Sql
         this.app.get("/api/clients/ident/:id", async (req: Request, res: Response) => {
             const id = req.params.id
@@ -130,6 +117,32 @@ class Server {
             const id = req.params.id
             try {
                 const results = await collectorConsult(id);
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+         //--payJoinId-Sql
+         this.app.get("/api/payments/listjoin/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await payJoinId(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+        //--payJoin-Sql
+        this.app.get("/api/payments/list", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await payJoin());
                 res.json(results)
             } catch (error) {
                 console.error('Error al realizar la consulta:', error);

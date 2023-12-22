@@ -84,6 +84,7 @@ export interface Payment {
     finishLoan?: string;
     dues?: number;
     duesPaid?: number;
+    duesRealPay?: number;
     duesValue?: number;
     paymentF?: string;
     id_client?: number;

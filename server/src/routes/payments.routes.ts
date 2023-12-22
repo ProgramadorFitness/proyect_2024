@@ -3,10 +3,11 @@ import { create, list } from "../controllers/payments.controllers";
 
 const paymentsRoutes = Router();
 
-paymentsRoutes.get("/list", list)
+paymentsRoutes.get("/list");
 
-paymentsRoutes.get("/listjoin/:id")
+paymentsRoutes.get("/listjoin/:id");
 
-paymentsRoutes.get("/create", create)
+paymentsRoutes.get("/create", create);
+
 
 export default paymentsRoutes
