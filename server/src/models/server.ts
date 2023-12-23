@@ -18,7 +18,9 @@ import { ClientsConsult } from '../controllers/client.controller';
 import { collectorConsult } from '../controllers/collectors.controller';
 import paymentsRoutes from '../routes/payments.routes';
 import Payment from './payment';
-import { payJoin, payJoinId } from '../controllers/payments.controllers';
+import { createSql, payConsultId, payJoin, payJoinId } from '../controllers/payments.controllers';
+import collectionsRoutes from '../routes/collections';
+import { listJoin } from '../controllers/collections.controller';
 
 
 
@@ -60,6 +62,7 @@ class Server {
         this.app.use("/api/loans", LoansRoutes )
         this.app.use("/api/collectors", CollectorsRoutes )
         this.app.use("/api/payments", paymentsRoutes )
+        this.app.use("/api/collections", collectionsRoutes )
         
         //--Walltes-Sql
         this.app.get("/api/wallets/listjoin/:id", async (req: Request, res: Response, any) => {
@@ -150,6 +153,46 @@ class Server {
                 
             }
         } )
+
+           //--Pay-ID-Sql
+           this.app.get("/api/payments/pay/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await payConsultId(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+
+           //--Collections-Sql
+           this.app.get("/api/collections/listjoin", async (req: Request, res: Response, any) => {
+            try {
+                const results = (await listJoin());
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+           //--Payments-ID-Sql
+           
+           /*this.app.get("/api/payments/createSql/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await createSql(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )*/
             
     }
 

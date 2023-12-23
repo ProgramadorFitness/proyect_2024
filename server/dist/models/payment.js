@@ -25,6 +25,15 @@ const Payment = connection_1.default.define('payment', {
     },
     observation: {
         type: sequelize_1.DataTypes.STRING
+    },
+    state: {
+        type: sequelize_1.DataTypes.STRING
+    },
+    realDate: {
+        type: sequelize_1.DataTypes.DATE
+    },
+    outBalance: {
+        type: sequelize_1.DataTypes.STRING
     }
 });
 exports.default = Payment;

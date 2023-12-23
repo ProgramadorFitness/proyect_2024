@@ -15,8 +15,9 @@ export const list: RequestHandler = async (req, res) => {
 
 export const create: RequestHandler = async (req, res) => {
     try {
-        await Loan.create({...req.body})
-        return res.status(200).json({"message":"Client save"})
+        const loans = await Loan.create({...req.body, returning: true})
+        //console.log(loans)
+        return res.status(200).json({loans,"message":"Client save"})
     } catch (error) {
         return res.status(500).json({"message": "Hubo un error", "error": error})
     }

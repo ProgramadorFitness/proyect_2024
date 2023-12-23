@@ -26,6 +26,18 @@ const Payment = sequelize.define('payment', {
 
     observation: {
         type: DataTypes.STRING
+    },
+
+    state: {
+        type: DataTypes.STRING
+    },
+
+    realDate: {
+        type: DataTypes.DATE
+    },
+
+    outBalance: {
+        type: DataTypes.STRING
     }
 
 

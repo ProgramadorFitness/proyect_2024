@@ -22,6 +22,7 @@ const id_loan = localStorage.getItem('id_loan_temp')
 
     function ListAll (){
       localStorage.removeItem('id_loan_temp')
+      location.reload()
     }
 
 useEffect(() => {

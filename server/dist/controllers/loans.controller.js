@@ -27,8 +27,9 @@ const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.list = list;
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield loans_1.default.create(Object.assign({}, req.body));
-        return res.status(200).json({ "message": "Client save" });
+        const loans = yield loans_1.default.create(Object.assign(Object.assign({}, req.body), { returning: true }));
+        //console.log(loans)
+        return res.status(200).json({ loans, "message": "Client save" });
     }
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });

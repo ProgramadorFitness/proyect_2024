@@ -40,6 +40,7 @@ const Modal_Loan = () => {
     const [finishDate, setFinish] = useState("")
     const [dues, setDues] = useState("")
     const [duesValue, setDuesValue] = useState("")
+    const api = new Api();
 
 
     /*const auth = useAuth();
@@ -153,7 +154,9 @@ const Modal_Loan = () => {
     
       if(name == "wallet"){
         setWallet(value)
-      }else if(name == "paymentF"){
+      }
+      
+      if(name == "paymentF"){
         setPaymentF(value)
       }
       
@@ -189,18 +192,72 @@ const Modal_Loan = () => {
           setIdClient(String(data?.map((item) =>(item.id))))
 
       }
-        
+      
+      function addDaysToDate(dates:Date , dayss: number) {
+        const res = new Date(dates);
+        res.setDate(res.getDate() + dayss);
+        return res;
+      }
     
 
     async function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
 
       try {
-        const api = new Api();
         const response = await (await (api.postLoans(
           id_client, valueInicial, valueEnd, interest, state1, wallet, startDate, 
-          finishDate, dues, duesValue, paymentF))).data
-        console.log(response)
+          finishDate, dues, duesValue, paymentF))).data['loans']
+        const id_new_loan = response['id']
+
+        if(response){
+          if(paymentF == "diario"){
+            for (let index = 1; index <= +dues; index++) {
+              //console.log(startDate)
+              const tmpDate  = new Date(startDate)
+              const datePayments = addDaysToDate(tmpDate, index).toUTCString()
+              //console.log(datePayments.toLocaleDateString())
+              const statePayments = "up to date"
+              const response2 = await (await (api.postPaymentsLoans(
+                id_new_loan, String(index), datePayments, statePayments))).data
+              //console.log(id_new_loan, payment, String(index), datePayments, statePayments)
+            }
+          }else if(paymentF == "semanal"){
+            for (let index = 1; index <= +dues; index++) {
+              const quin = 7*index
+              const tmpDate  = new Date(startDate)
+              const datePayments = addDaysToDate(tmpDate, quin).toUTCString()
+              //console.log(datePayments.toLocaleDateString())
+              const statePayments = "up to date"
+              const response2 = await (await (api.postPaymentsLoans(
+                id_new_loan, String(index), datePayments, statePayments))).data
+              //console.log(id_new_loan, payment, String(index), datePayments, statePayments)
+            }
+          }else if(paymentF == "quicenal"){
+            for (let index = 1; index <= +dues; index++) {
+              const quin = 15*index
+              const tmpDate  = new Date(startDate)
+              const datePayments = addDaysToDate(tmpDate, quin).toUTCString()
+              //console.log(datePayments.toLocaleDateString())
+              const statePayments = "up to date"
+              const response2 = await (await (api.postPaymentsLoans(
+                id_new_loan, String(index), datePayments, statePayments))).data
+              //console.log(id_new_loan, payment, String(index), datePayments, statePayments)
+            }
+          }else {
+            for (let index = 1; index <= +dues; index++) {
+              const quin = 30*index
+              const tmpDate  = new Date(startDate)
+              const datePayments = addDaysToDate(tmpDate, quin).toUTCString()
+              //console.log(datePayments.toLocaleDateString())
+              const statePayments = "up to date"
+              const response2 = await (await (api.postPaymentsLoans(
+                id_new_loan, String(index), datePayments, statePayments))).data
+              //console.log(id_new_loan, payment, String(index), datePayments, statePayments)
+            }
+          }
+          
+        }
+
   
       } catch (error) {
         console.log(error);
