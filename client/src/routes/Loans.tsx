@@ -32,7 +32,7 @@ useEffect(() => {
         <div className='pt-6'>
         <Modal_Loan/>
         </div>
-        <div className='py-8'>
+        <div className='py-8 overflow-auto'>
         <Table_Loan data={state.listLoans}/>
         </div>
     </DefaultLayout>

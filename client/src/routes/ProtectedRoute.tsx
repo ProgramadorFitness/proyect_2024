@@ -8,7 +8,7 @@ export default function ProtectedRoute(){
 
     if(localStorage.getItem('token')){
         auth.isAuthenticated = true
-        return auth.isAuthenticated ? <Outlet/> : <Navigate to="/client" />;
+        return auth.isAuthenticated ? <Outlet/> : <Navigate to="/dashboard" />;
     }else{
         return auth.isAuthenticated ? <Outlet/> : <Navigate to="/" />;
     }

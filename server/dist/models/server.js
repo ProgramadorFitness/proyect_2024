@@ -192,6 +192,18 @@ class Server {
                 res.status(500).send('Error interno del servidor');
             }
         }));
+        //--Collections-ID-Sql
+        this.app.get("/api/collections/listjoinID/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, collections_controller_1.listJoinID)(id));
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
         //--Payments-ID-Sql
         /*this.app.get("/api/payments/createSql/:id", async (req: Request, res: Response, any) => {
          const id = req.params.id

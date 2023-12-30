@@ -13,6 +13,9 @@ const Wallet = connection_1.default.define('wallet', {
     },
     id_collector: {
         type: sequelize_1.DataTypes.STRING
+    },
+    capital: {
+        type: sequelize_1.DataTypes.INTEGER
     }
 });
 exports.default = Wallet;

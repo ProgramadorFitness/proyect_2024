@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Client, Loan } from '../models/models';
 import Api from '../controllers/user.controller';
-import { FaCashRegister, FaHandHoldingUsd } from 'react-icons/fa';
+import { FaCashRegister, FaFilePdf, FaHandHolding, FaHandHoldingUsd } from 'react-icons/fa';
 import Table_Payments from './Table_Payments';
 import Payments from '../routes/Payments';
 import { useNavigate } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
 
 
 interface Props {
@@ -49,9 +50,7 @@ const Table_Loan = ({ data }: Props) => {
     const [datePay, setDatepay] = useState("")
     const [duesPay, setDuespay] = useState("")
     const goTo = useNavigate();
-  
-
-
+    const componentPDF = useRef();
 
     const [identification, setIdent] = useState("")
     const [file, setFile] = useState(null)
@@ -184,11 +183,17 @@ const Table_Loan = ({ data }: Props) => {
         setShowModal(true)
 
     }
-    //useEffect(() => { getClientsIdent(id) }, []);
-
+    const generatePdf = useReactToPrint({
+        content: () => componentPDF.current || null,
+        documentTitle: "TablaClient",
+        onAfterPrint:() => alert("Data save in PDF")
+      });
     return (
         <div className='overflow-x-auto shadow-md sm:rounded-lg'>
-            <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
+            <th scope="col" className="px-6 py-3  text-black bg-slate-300 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400">
+                    <button onClick={generatePdf}><FaFilePdf/>Generar PDF</button>
+                    </th>
+                <div ref={ componentPDF} style={{width:'100%', height:'100%'}}className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
                 <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400 ">
                     <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400 overflow-y-auto">
                         <th>
@@ -255,9 +260,9 @@ const Table_Loan = ({ data }: Props) => {
                                         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline" type="button"
                                             //onClick={() => getClientsIdent(item.id || null)}
-                                            onClick={() =>redirect(item.id || null)}
+                                            onClick={() =>redirect(item.id || null)} 
                                         >
-                                            Pay <FaHandHoldingUsd className="h-8" />
+                                            Pay <FaHandHolding className="h-8" />
                                         </button>
 
                                         {showModal ? (

@@ -185,6 +185,10 @@ export default class Api {
         return axios.get("http://localhost:5001/api/collections/listjoin")
     }
 
+    public getCollectionsJoinID(id:string){
+        return axios.get(`http://localhost:5001/api/collections/listjoinID/${id}`)
+    }
+
 
     // Routes Payments
     public getPaymentId(id:string){

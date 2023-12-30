@@ -1,8 +1,9 @@
-import { FaHandHoldingUsd } from "react-icons/fa";
+import { FaFilePdf, FaHandHolding, FaHandHoldingUsd } from "react-icons/fa";
 import Api from "../controllers/user.controller";
 import { Client, Payment } from "../models/models";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useReactToPrint } from "react-to-print";
 
 interface Props {
   data: Payment[]
@@ -39,7 +40,8 @@ const Table_Payments = ({data}: Props) => {
     const [duesPay, setDuespay] = useState("")
     const [outBalance, setOut] = useState(0)
     const [statePay, setStatePay] = useState("")
-  
+    const componentPDF = useRef();
+    const goTo = useNavigate();
 
 
 
@@ -175,10 +177,26 @@ const Table_Payments = ({data}: Props) => {
         setShowModal(true)
 
     }
+
+    const generatePdf = useReactToPrint({
+        content: () => componentPDF.current || null,
+        documentTitle: "TablaClient",
+        onAfterPrint:() => alert("Data save in PDF")
+      });
+
+      function redirect (id_temp:unknown){
+        goTo("/collection")
+        
+        localStorage.setItem("id_pay_temp", String(id_temp))
+    }
+    
     
     return (
     <div className='overflow-x-auto shadow-md sm:rounded-lg'>
-    <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
+        <th scope="col" className="px-6 py-3  text-black bg-slate-300 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400">
+                    <button onClick={generatePdf}><FaFilePdf/>Generar PDF</button>
+                    </th>
+        <div ref={ componentPDF} style={{width:'100%', height:'100%'}} className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
         <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
             <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400 ">
                 <th>
@@ -228,7 +246,7 @@ const Table_Payments = ({data}: Props) => {
                                             className="font-medium text-blue-600 dark:text-blue-500 hover:underline" type="button"
                                             onClick={() => getClientsIdent(item.id || null)}
                                         >
-                                            Pay <FaHandHoldingUsd className="h-8" />
+                                            Pay <FaHandHolding className="h-8" />
                                         </button>
 
                                         {showModal ? (
@@ -513,7 +531,14 @@ const Table_Payments = ({data}: Props) => {
                                                 </div>
                                             </>
                                         ) : null}
-                                    </></td>
+                                    </>
+                                    <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+                                            className="border-l pl-2 font-medium text-blue-800 dark:text-blue-800 hover:underline" type="button"
+                                            onClick={() =>redirect(item.id_loan || null)}
+                                        >
+                                            Collect <FaHandHoldingUsd className="h-8" />
+                                    </button>
+                    </td>
                 </tr>
                 ))}
             </tbody>

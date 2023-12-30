@@ -4,8 +4,8 @@ import Api from "../controllers/user.controller";
 import { useAuth } from "../auth/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { AuthResponse } from "../types/types";
-
-
+import jwt  from 'jsonwebtoken';
+import { jwtDecode } from "jwt-decode";
 
 const FormLogin = () => {
 
@@ -29,7 +29,6 @@ const FormLogin = () => {
 
     async function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
-
       
       try {
         const api = new Api();
@@ -39,8 +38,10 @@ const FormLogin = () => {
         if(token){
           localStorage.setItem('token', token)
           auth.isAuthenticated = true;
-          goTo("/client");
-          
+          goTo("/dashboard");  
+          const decodedHeader = jwtDecode(token);
+          const decodedHeaderType = decodedHeader.type
+          localStorage.setItem('typeUser', decodedHeaderType);
         }else{
           console.log("error")
         }

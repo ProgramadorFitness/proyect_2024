@@ -10,6 +10,10 @@ const Wallet = sequelize.define('wallet', {
 
     id_collector:{
         type: DataTypes.STRING
+    },
+
+    capital: {
+        type: DataTypes.INTEGER
     }
 })
 

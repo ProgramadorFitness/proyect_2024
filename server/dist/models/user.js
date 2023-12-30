@@ -11,7 +11,7 @@ const User = connection_1.default.define('user', {
         primaryKey: true,
         autoIncrement: true
     },
-    id_collector: {
+    id_user: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     },

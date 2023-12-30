@@ -1,4 +1,7 @@
+import { useRef } from "react";
 import { Payment } from "../models/models";
+import { useReactToPrint } from "react-to-print";
+import { FaFilePdf } from "react-icons/fa";
 
 interface Props {
   data: Payment[]
@@ -7,11 +10,23 @@ interface Props {
 
 
 const Table_Collections = ({data}: Props) => {
+
+    const componentPDF = useRef();
+
     
+
+    const generatePdf = useReactToPrint({
+        content: () => componentPDF.current || null,
+        documentTitle: "TablaClient",
+        onAfterPrint:() => alert("Data save in PDF")
+      });
     
     return (
     <div className='overflow-x-auto shadow-md sm:rounded-lg'>
-    <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
+        <th scope="col" className="px-6 py-3  text-black bg-slate-300 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400">
+                    <button onClick={generatePdf}><FaFilePdf/>Generar PDF</button>
+                    </th>
+        <div ref={ componentPDF} style={{width:'100%', height:'100%'}} className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
         <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
             <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400 ">
                 <th>

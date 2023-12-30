@@ -1,9 +1,9 @@
 /*import { Link } from "react-scroll";*/
 import { Link, useNavigate } from "react-router-dom";
-import {FaTimes, FaBars} from "react-icons/fa";
+import {FaTimes, FaBars, FaSignOutAlt} from "react-icons/fa";
 import { FaAngleDoubleRight } from "react-icons/fa";
 /*import Image from '../assets/icono.png';*/
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../auth/AuthProvider";
 //import { useAuth } from "../auth/AuthProvider";
 
@@ -37,6 +37,17 @@ const Nav = () => {
         localStorage.removeItem('token')
         auth.isAuthenticated = false
     }
+
+    const validateUserType = () => {
+        if(auth.userType === 'admin'){
+
+            
+        }
+    }
+
+    useEffect(() => {
+
+    },[]);
     
     const  content = <>
         <div className="lg:hidden block absolute top-16 w-full left-0 rigth-0 bg-slate-300 transition overflow-y-auto overflow-x-auto">
@@ -130,8 +141,9 @@ const Nav = () => {
                             )}
                         </div>
                     </li>
-                    <Link  to="/" >
-                        <li 
+                    <Link  to="/" ><FaSignOutAlt />
+
+                        <li  
                         onClick={handleClickLogOut}
                         className="hover:text-fuchsia-600 transition bg-slate-300  hover:border-fuchsia-600 cursor-pointer">LogOut</li>
                     </Link>

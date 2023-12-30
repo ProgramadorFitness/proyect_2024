@@ -8,7 +8,7 @@ const User = sequelize.define('user', {
         autoIncrement: true
     },
 
-    id_collector: {
+    id_user: {
         type: DataTypes.STRING,
         allowNull: false 
     },

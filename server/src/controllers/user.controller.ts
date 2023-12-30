@@ -22,7 +22,7 @@ export const newUser = async (req: Request, res: Response) => {
 
     try {
         await User.create({
-            id_collector: id,
+            id_user: id,
             username: username,
             password: hashPassword,
             type: type
@@ -44,6 +44,8 @@ export const newUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
 
     const {username, password} = req.body;
+    console.log(res)
+
 
     //--Validacion de usuario
      const user: any = await User.findOne({where:{username: username}})
@@ -54,6 +56,21 @@ export const loginUser = async (req: Request, res: Response) => {
         })
      }
 
+     // Extraer type
+
+    const typeVali: 'admin' | 'client' |'collector' | 'supervisor' = user.type
+
+    if (typeVali === 'admin') {
+        console.log('El usuario es un administrador.');
+      } else if (typeVali === 'supervisor') {
+        console.log('El usuario es un usuario regular.');
+      }else if (typeVali === 'collector') {
+        console.log('El usuario es un usuario regular.');
+      }else if (typeVali === 'client') {
+        console.log('El usuario es un usuario regular.');
+      }else {
+        console.log('El usuario es un invitado.');
+      }
 
     // Validamos password
 
@@ -65,13 +82,16 @@ export const loginUser = async (req: Request, res: Response) => {
             msg: 'Password Incorrecto'
         })
     }
+    //console.log(typeVali)
 
     // Generamos token
 const token = jwt.sign({
-    username: username
+    username: username,
+    type: typeVali
 }, process.env.SECRET_KEY || 'ELTORPELLEGO',{
    
 });
+
 
 res.json(token)
 

@@ -36,14 +36,14 @@ async function getWallets(id1:unknown ) {
             {data?.map((item) => (
                 <li key={item.id} className="me-2">
                 <button   type="button"
-                  className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-black-300"
+                  className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-fuchsia-600 hover:border-gray-300 dark:hover:text-black-300"
                 onClick={()=> getWallets(item.id || null)}>Cartera #
                   {item.id}
                 </button>
               </li>
             ))}
           </ul>
-            <div className='py-8'>
+            <div>
              <Table_Wallets data={state.listWallet}/>
             </div>
           </div>

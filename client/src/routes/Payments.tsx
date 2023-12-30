@@ -38,12 +38,12 @@ useEffect(() => {
         setState({payment:null, listPayment:response2})
       const lsit1 = response2
       }
-
+  
   })();
 },[]);
 
 
-
+ 
 
   return (
     <DefaultLayout>
@@ -54,7 +54,7 @@ useEffect(() => {
         List All
     </button>
       </div>      
-      <div className='pt-6'>
+      <div className='pt-6 overflow-auto'>
       <Table_Payments data={state.listPayment}/>
       </div>
     </DefaultLayout>

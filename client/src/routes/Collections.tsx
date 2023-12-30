@@ -16,19 +16,43 @@ const Collections = () => {
     listPayment:[]
   })
 
+  const id_pay = localStorage.getItem('id_pay_temp')
+    //console.log(id_loan)
+
+    function ListAll (){
+      localStorage.removeItem('id_pay_temp')
+      location.reload()
+    }
+
   useEffect(() => {
-    (async function getClients() {
+    (async function getCollection() {   
         const api = new Api()
-        const response = (await api.getCollectionsJoin()).data
-        console.log(response)
-        setState({payment:null, listPayment:response})
+        if (id_pay == null) {
+          const response = (await api.getCollectionsJoin()).data
+          console.log(response)
+          setState({payment:null, listPayment:response})
+        }else{
+          const response = (await api.getCollectionsJoinID(id_pay)).data
+          console.log(response)
+          setState({payment:null, listPayment:response})
+        }
+        
     })();
 },[]);
 
 
   return (
    <DefaultLayout>
-        <Table_Collections data={state.listPayment}/>
+    <div className='pt-6'>
+      <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="block text-black bg-slate-300 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400" type="button"
+        onClick={ListAll}
+        >
+          List All
+      </button>
+    </div> 
+    <div className='pt-6 overflow-auto'>
+    <Table_Collections data={state.listPayment}/>
+    </div>
    </DefaultLayout>
   )
 }

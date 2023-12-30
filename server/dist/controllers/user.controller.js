@@ -28,7 +28,7 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const hashPassword = yield bcrypt_1.default.hash(password, 10);
     try {
         yield user_1.default.create({
-            id_collector: id,
+            id_user: id,
             username: username,
             password: hashPassword,
             type: type
@@ -46,12 +46,30 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.newUser = newUser;
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, password } = req.body;
+    console.log(res);
     //--Validacion de usuario
     const user = yield user_1.default.findOne({ where: { username: username } });
     if (!user) {
         return res.status(400).json({
             msg: 'No existe un usuario con el nombre ' + username
         });
+    }
+    // Extraer type
+    const typeVali = user.type;
+    if (typeVali === 'admin') {
+        console.log('El usuario es un administrador.');
+    }
+    else if (typeVali === 'supervisor') {
+        console.log('El usuario es un usuario regular.');
+    }
+    else if (typeVali === 'collector') {
+        console.log('El usuario es un usuario regular.');
+    }
+    else if (typeVali === 'client') {
+        console.log('El usuario es un usuario regular.');
+    }
+    else {
+        console.log('El usuario es un invitado.');
     }
     // Validamos password
     const passwordVali = yield bcrypt_1.default.compare(password, user.password);
@@ -61,9 +79,11 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             msg: 'Password Incorrecto'
         });
     }
+    //console.log(typeVali)
     // Generamos token
     const token = jsonwebtoken_1.default.sign({
-        username: username
+        username: username,
+        type: typeVali
     }, process.env.SECRET_KEY || 'ELTORPELLEGO', {});
     res.json(token);
 });

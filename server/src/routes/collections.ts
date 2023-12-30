@@ -7,5 +7,7 @@ collectionsRoutes.get("/list", list);
 
 collectionsRoutes.get("/listjoin");
 
+collectionsRoutes.get("/listjoinID/:id");
+
 
 export default collectionsRoutes

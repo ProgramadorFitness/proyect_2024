@@ -20,7 +20,7 @@ import paymentsRoutes from '../routes/payments.routes';
 import Payment from './payment';
 import { createSql, payConsultId, payJoin, payJoinId } from '../controllers/payments.controllers';
 import collectionsRoutes from '../routes/collections';
-import { listJoin } from '../controllers/collections.controller';
+import { listJoin, listJoinID } from '../controllers/collections.controller';
 
 
 
@@ -172,6 +172,19 @@ class Server {
            this.app.get("/api/collections/listjoin", async (req: Request, res: Response, any) => {
             try {
                 const results = (await listJoin());
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+        //--Collections-ID-Sql
+        this.app.get("/api/collections/listjoinID/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id
+            try {
+                const results = (await listJoinID(id));
                 res.json(results)
             } catch (error) {
                 console.error('Error al realizar la consulta:', error);
