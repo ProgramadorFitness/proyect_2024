@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthResponse } from "../types/types";
 import jwt  from 'jsonwebtoken';
 import { jwtDecode } from "jwt-decode";
+import Spinners from "./Spinners";
 
 const FormLogin = () => {
 
@@ -14,6 +15,8 @@ const FormLogin = () => {
   const [errorResponse, setErrorResponse] = useState("");
   const auth = useAuth();
   const goTo = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+
 
 
     function handleChange(e: React.ChangeEvent) {
@@ -31,6 +34,7 @@ const FormLogin = () => {
       e.preventDefault();
       
       try {
+        setLoading(true);
         const api = new Api();
         const token = await (await (api.getLogin(username, password))).data
         //console.log(token)
@@ -38,16 +42,18 @@ const FormLogin = () => {
         if(token){
           localStorage.setItem('token', token)
           auth.isAuthenticated = true;
+          
           goTo("/dashboard");  
           const decodedHeader = jwtDecode(token);
           const decodedHeaderType = decodedHeader.type
           localStorage.setItem('typeUser', decodedHeaderType);
+          
         }else{
           console.log("error")
         }
-        
 
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     }
@@ -92,7 +98,7 @@ const FormLogin = () => {
               />
 
               <button className="mt-4 block rounded-md bg-slate-300 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-400">
-                Login
+                Login<Spinners loading={loading}/>
               </button>
             </form>
           </div>

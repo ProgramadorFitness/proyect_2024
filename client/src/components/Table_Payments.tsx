@@ -4,6 +4,7 @@ import { Client, Payment } from "../models/models";
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
+import { jsPDF } from 'jspdf';
 
 interface Props {
   data: Payment[]
@@ -142,6 +143,8 @@ const Table_Payments = ({data}: Props) => {
           } catch (error) {
             console.log(error);
           }
+
+          generateBillPDF()
     }
 
     async function getClientsIdent(id1: unknown) {
@@ -177,6 +180,27 @@ const Table_Payments = ({data}: Props) => {
         setShowModal(true)
 
     }
+
+    const generateBillPDF = () => {
+        const doc = new jsPDF();
+    
+        // Agregar contenido al documento
+        // Agregar título
+        doc.setFontSize(18);
+        doc.text('Factura', 100, 20);
+
+        // Agregar subtítulo
+        doc.setFontSize(14);
+        doc.text(String(id), 20, 40);
+        doc.text(String(pay), 20, 50);
+        doc.text(String(datePay), 20, 60);
+        doc.text(String(observation), 20, 70);
+        doc.text(String(outBalance), 20, 80);
+        doc.text(String(statePay), 20, 90);   
+    
+        // Guardar el documento como un archivo PDF
+        doc.save('documento.pdf');
+      };
 
     const generatePdf = useReactToPrint({
         content: () => componentPDF.current || null,
