@@ -35,11 +35,8 @@ const Clients = () => {
       return (
       <div >
       <DefaultLayout>
-        <div className='pt-6'>
-        <Modal_Client/>
-        </div>
         <div className='py-8' >
-          <Table_Client data={state.listClient}/>
+          <Table_Client data={state.listClient} />
         </div>
       </DefaultLayout>
       

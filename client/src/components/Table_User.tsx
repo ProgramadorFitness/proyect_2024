@@ -1,4 +1,6 @@
 import { Collector } from "../models/models"
+import Modal_Add_Users from "./Modal_Add_User"
+import Modal_Signup from "./Modal_Signup"
 
 interface Props {
   data: Collector[]
@@ -6,9 +8,17 @@ interface Props {
 const Table_User = ({data}: Props) => {
   return (
     <div className='overflow-x-auto shadow-md sm:rounded-lg'>
-        <div className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
+        <div className='flex p-4 bg-slate-300'>
+            <div className='ps-6'>
+                <Modal_Signup/>
+            </div>
+            <div className='ps-8'>
+                <Modal_Add_Users/>
+            </div>
+      </div>
+        <div className='bg-slate-300 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
         <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
-                <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400">
+        <thead className="text-xs text-black-300 uppercase bg-gray-500 dark:bg-gray-500 dark:text-black-400">
                     <th>
                         <div className="flex items-center">
                             <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
@@ -27,7 +37,7 @@ const Table_User = ({data}: Props) => {
                     <th scope="col" className="px-6 py-3">NEIGHBORHOOD</th>
                     <th scope="col" className="px-6 py-3">ACTION</th>
                 </thead>
-                <tbody>
+                <tbody className="text-xs text-black-300 uppercase bg-slate-300 dark:bg-slate-200 dark:text-black-400">
                 {data?.map((item) => (
                     <tr key={item.id}>
                         <td className="w-4 p-4">

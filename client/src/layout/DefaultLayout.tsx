@@ -9,6 +9,7 @@ export default function DefaultLayout({children}: DefaultLayoutProps){
    <>
    <div className='bg-slate-300'>
     <Navbar/>
+    
     </div>
     <main>{children}</main>
 

@@ -28,14 +28,6 @@ const Users = () => {
 
   return (
     <DefaultLayout>
-      <div className='flex pt-6'>
-      <div className='ps-6'>
-        <Modal_Signup/>
-        </div>
-        <div className='ps-8'>
-        <Modal_Add_Users/>
-        </div>
-      </div>
         <div className='py-8'>
           <Table_User data={state.listCollector}/>
         </div>

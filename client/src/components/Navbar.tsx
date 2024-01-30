@@ -38,12 +38,12 @@ const Nav = () => {
         auth.isAuthenticated = false
     }
 
-    const validateUserType = () => {
+    /*const validateUserType = () => {
         if(auth.userType === 'admin'){
 
             
         }
-    }
+    }*/
 
     useEffect(() => {
 
@@ -63,7 +63,7 @@ const Nav = () => {
                         <li className="my-4 py-4 border-b bg-slate-300 hover:rounded">Loans</li>
                     </Link>                
                     <Link  to="/collector" >
-                        <li className="my-4 py-4 border-b bg-slate-300 hover:rounded">Collectors</li>
+                        <li className="my-4 py-4 border-b bg-slate-300 hover:rounded">Users</li>
                     </Link>
                     <Link  to="/client" >
                         <li className="my-4 py-4 border-b bg-slate-300 hover:rounded">Client</li>
@@ -98,7 +98,7 @@ const Nav = () => {
 
   return (
     <nav>
-        <div className="h-10vh flex justify-between z-50 text-black lg:py-5 px-20 py-4 flex-1 overflow-y-auto overflow-x-auto">
+        <div className="h-10vh  flex justify-between z-50 text-black lg:py-5 px-20 py-4 flex-1 ">
             < div className="flex items-left flex-1">
                 <span className="text-3xl font-bold">
                     INVER CREDITOS
@@ -117,7 +117,7 @@ const Nav = () => {
                         <li className="hover:text-fuchsia-600 transition bg-slate-300  hover:border-fuchsia-600 cursor-pointer">Loans</li>
                     </Link>
                     <Link  to="/collector" >
-                        <li className="hover:text-fuchsia-600 transition bg-slate-300  hover:border-fuchsia-600 cursor-pointer">Collectors</li>
+                        <li className="hover:text-fuchsia-600 transition bg-slate-300  hover:border-fuchsia-600 cursor-pointer">Users</li>
                     </Link> 
                     <Link  to="/client" >
                         <li className="hover:text-fuchsia-600 transition bg-slate-300  hover:border-fuchsia-600 cursor-pointer">Client</li>

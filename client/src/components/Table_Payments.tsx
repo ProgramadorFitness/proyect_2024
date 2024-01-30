@@ -1,10 +1,13 @@
 import { FaFilePdf, FaHandHolding, FaHandHoldingUsd } from "react-icons/fa";
 import Api from "../controllers/user.controller";
 import { Client, Payment } from "../models/models";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
-import { jsPDF } from 'jspdf';
+/*import { CellConfig, TableConfig, jsPDF } from 'jspdf';
+import autoTable from "jspdf-autotable";*/
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import TablaPDF from "./Invoice";
 
 interface Props {
   data: Payment[]
@@ -98,6 +101,15 @@ const Table_Payments = ({data}: Props) => {
             setDatepay(value)
         }
 
+        
+        // Verify state
+        if(pay == duesValue){
+            setStatePay("pay")
+        }else if(+pay < +duesValue){
+            setStatePay("pay of part")
+            //console.log(statePay)
+        }
+
     }
 
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -112,23 +124,14 @@ const Table_Payments = ({data}: Props) => {
         }
     }
 
-    // Verify state
-    function verifyState(){
-        if(pay == duesValue){
-            setStatePay("pay")
-        }else if(+pay < +duesValue){
-            setStatePay("pay of part")
-            //console.log(statePay)
-        }
-    }
 
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
 
-        verifyState()
 
+        console.log(statePay)
         try {
             const api = new Api();
             const response = await (await (api.postPayments(
@@ -138,13 +141,14 @@ const Table_Payments = ({data}: Props) => {
                 observation,
                 outBalance,
                 statePay
-                ))).data      
-           
+                ))).data 
+                
+    
           } catch (error) {
             console.log(error);
           }
 
-          generateBillPDF()
+          
     }
 
     async function getClientsIdent(id1: unknown) {
@@ -181,26 +185,25 @@ const Table_Payments = ({data}: Props) => {
 
     }
 
-    const generateBillPDF = () => {
-        const doc = new jsPDF();
-    
-        // Agregar contenido al documento
-        // Agregar título
-        doc.setFontSize(18);
-        doc.text('Factura', 100, 20);
+    //const generateInvoicePDF = () => {
+        const datosEjemplo = [
+            {   id:String(id),
+                pay:String(pay),
+                datePay:String(datePay),
+                observation:String(observation),
+                outBalance:String(outBalance),
+                statePay:String(statePay)}
+          ];
 
-        // Agregar subtítulo
-        doc.setFontSize(14);
-        doc.text(String(id), 20, 40);
-        doc.text(String(pay), 20, 50);
-        doc.text(String(datePay), 20, 60);
-        doc.text(String(observation), 20, 70);
-        doc.text(String(outBalance), 20, 80);
-        doc.text(String(statePay), 20, 90);   
-    
-        // Guardar el documento como un archivo PDF
-        doc.save('documento.pdf');
-      };
+          /*return (
+            <div>
+              <h1>Tabla en PDF</h1>
+              <PDFDownloadLink document={<TablaPDF datos={datosEjemplo} />} fileName="tabla.pdf">
+                {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar Tabla PDF')}
+              </PDFDownloadLink>
+            </div>
+       );
+    };*/
 
     const generatePdf = useReactToPrint({
         content: () => componentPDF.current || null,
@@ -220,10 +223,10 @@ const Table_Payments = ({data}: Props) => {
         <th scope="col" className="px-6 py-3  text-black bg-slate-300 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400">
                     <button onClick={generatePdf}><FaFilePdf/>Generar PDF</button>
                     </th>
-        <div ref={ componentPDF} style={{width:'100%', height:'100%'}} className='flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
-        <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
-            <thead className="text-xs text-black-300 uppercase bg-gray-50 dark:bg-gray-500 dark:text-black-400 ">
-                <th>
+         <div ref={ componentPDF} style={{width:'100%', height:'100%'}}className='bg-slate-300 flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-black dark:bg-slate-300 overflow-y-auto'>
+            <table className="w-full text-sm text-left rtl:text-right text-black-500 dark:text-black-400">
+                <thead className="text-xs text-black-300 uppercase bg-gray-500 dark:bg-gray-500 dark:text-black-400">
+                    <th>
                     <div className="flex items-center">
                         <input id="checkbox-all-search" type="checkbox" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
                         <label  className="sr-only">checkbox</label>
@@ -243,7 +246,7 @@ const Table_Payments = ({data}: Props) => {
                 <th scope="col" className="px-6 py-3">DATE PAY</th>
                 <th scope="col" className="px-6 py-3">ACTION</th>
             </thead>
-            <tbody>
+            <tbody className="text-xs text-black-300 uppercase bg-slate-300 dark:bg-slate-200 dark:text-black-400">
             {data?.map((item) => (
                 <tr key={item.id}>
                     <td className="w-4 p-4">
@@ -547,6 +550,15 @@ const Table_Payments = ({data}: Props) => {
                                                                         <button className="  px-8 block text-black bg-red-300 hover:bg-red-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-300 dark:hover:bg-red-400 dark:focus:ring-red-400" type="button"
                                                                             onClick={() => setShowModal(false)}
                                                                         >Cancel</button>
+                                                                    </div>
+
+                                                                    <div className=''>
+                                                                        <button className="  px-8 block text-black bg-red-300 hover:bg-red-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-300 dark:hover:bg-red-400 dark:focus:ring-red-400" type="button"
+                                                                        >
+                                                                        <PDFDownloadLink document={<TablaPDF datos={datosEjemplo} />} fileName="tabla.pdf">
+                                                                            {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar Tabla PDF')}
+                                                                        </PDFDownloadLink>
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </form>
