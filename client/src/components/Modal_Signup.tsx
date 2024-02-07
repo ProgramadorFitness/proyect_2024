@@ -105,7 +105,7 @@ async function getCollectorsid() {
             <form
               className=" justify-items-center text-center">
               <div className="border-b border-gray-900/10  " >
-                        <h2 className=" text-center text-2xl font-semibold leading-7 text-gray-900">Personal Information</h2>
+                        <h2 className=" text-center text-2xl font-semibold leading-7 text-gray-900"> Assign User</h2>
                 </div>
               {!!errorResponse && (
                 <div className="errorMessage">{errorResponse}</div>

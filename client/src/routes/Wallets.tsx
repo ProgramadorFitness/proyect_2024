@@ -35,7 +35,7 @@ useEffect(() => {
       const response2 = (await api.getWallets()).data
       setState1({wallet1:null, listWallet1:response2})
       const lsit1 = response2
-      console.log(lsit1.length)
+      //console.log(lsit1.length)
 
       /*const response = (await api.getWalletsjoin(lsit1.length)).data
       setState({wallet:null, listWallet:response})*/

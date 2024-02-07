@@ -8,10 +8,6 @@ const Wallet = sequelize.define('wallet', {
         autoIncrement: true
     },
 
-    id_collector:{
-        type: DataTypes.STRING
-    },
-
     capital: {
         type: DataTypes.INTEGER
     }

@@ -13,7 +13,7 @@ import Login from './routes/Login.tsx'
 import Payments from './routes/Payments.tsx'
 import Collections from './routes/Collections.tsx'
 
-
+const type = localStorage.getItem('typeUser');
 const router = createBrowserRouter([
 
   {

@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import { FaWindowClose, FaCheck} from "react-icons/fa";
+import { IoIosWarning } from "react-icons/io";
 type AlertProps = {
     variant?: "success" | "danger" | "warning";
     children: ReactNode;
@@ -15,11 +16,12 @@ export default function Alert({ variant = "success", children } : AlertProps){
   }
   
   return (
-    <div className={classVariant[variant]}>
-      <span>
+    <div className={classVariant[variant] +
+      " flex gap-2 items-center justify-center mx-auto"}>
+      <span className="text-2xl">
         {variant === "success" ? (<FaCheck/>)
         :variant === "danger" ? (<FaWindowClose/>) 
-        : (<FaCheck/>)}
+        : (<IoIosWarning />)}
         </span>
         {children}
     </div>

@@ -175,6 +175,10 @@ export default class Api {
         return axios.get(`http://localhost:5001/api/wallets/listjoin/${id}`)
     }
 
+    public postWallets(capital:string){
+        return axios.post("http://localhost:5001/api/wallets/create", {capital:capital})
+    }
+
     
     //Routes collections
     public getCollections(){

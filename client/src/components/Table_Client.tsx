@@ -127,9 +127,6 @@ const Table_Client = ({data}: Props) => {
                         
                            //console.log(String(data1?.map((item)=>(item.name))))
 
-                        
-            
-            
                       setName(response['name'])
                       setlastName(response['lastName'])
                       setAddress(response['address'])

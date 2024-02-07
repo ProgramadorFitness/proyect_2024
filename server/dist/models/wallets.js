@@ -11,9 +11,6 @@ const Wallet = connection_1.default.define('wallet', {
         primaryKey: true,
         autoIncrement: true
     },
-    id_collector: {
-        type: sequelize_1.DataTypes.STRING
-    },
     capital: {
         type: sequelize_1.DataTypes.INTEGER
     }
