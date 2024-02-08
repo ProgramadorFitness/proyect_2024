@@ -18,7 +18,7 @@ import { ClientsConsult } from '../controllers/client.controller';
 import { collectorConsult } from '../controllers/collectors.controller';
 import paymentsRoutes from '../routes/payments.routes';
 import Payment from './payment';
-import { createSql, payConsultId, payJoin, payJoinId } from '../controllers/payments.controllers';
+import { clientPay, createSql, payConsultId, payJoin, payJoinId } from '../controllers/payments.controllers';
 import collectionsRoutes from '../routes/collections';
 import { listJoin, listJoinID } from '../controllers/collections.controller';
 
@@ -159,6 +159,19 @@ class Server {
             const id = req.params.id 
             try {
                 const results = (await payConsultId(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+        //--Pay-ID-Sql-User
+        this.app.get("/api/payments/pay2/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await clientPay(id));
                 res.json(results)
             } catch (error) {
                 console.error('Error al realizar la consulta:', error);

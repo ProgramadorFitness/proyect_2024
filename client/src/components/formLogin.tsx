@@ -46,7 +46,9 @@ const FormLogin = () => {
           goTo("/dashboard");  
           const decodedHeader = jwtDecode(token);
           const decodedHeaderType = decodedHeader.type
+          const idUser = decodedHeader.id
           localStorage.setItem('typeUser', decodedHeaderType);
+          localStorage.setItem('idUser', idUser)
           
         }else{
           console.log("error")

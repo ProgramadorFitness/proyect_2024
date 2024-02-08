@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import Api from '../controllers/user.controller';
 import { Wallet } from '../models/models';
+import Alert from './Alert';
+import useAlert from './useAlert';
 
 interface State {
     wallet: Wallet | null
@@ -12,12 +14,16 @@ const Modal_Add_Wallet = () => {
     const [capital, setCapital] = useState("");
     const [numberWallet, setNumberWallet] = useState("");
 
-    const [data1, setData] = useState<Wallet[]>()
+    const { alerts, createToast } = useAlert();
 
-    const[state, setState] = useState<State>({
-      wallet: null,
-      listWallet:[]
-  })
+    const addAlert = (variant: string) => {
+      createToast({
+        text: "Mensaje generico",
+        variant
+      });
+    };
+
+ 
 
 
     function  handleChange(e: React.ChangeEvent) {
@@ -50,12 +56,19 @@ const Modal_Add_Wallet = () => {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-    
-        console.log("hola")
-        
+            
         try {
             const api = new Api();
-            const response = await (await (api.postWallets(capital))).data
+            if(capital != ""){
+                const response = await (await (api.postWallets(capital))).status
+            console.log(response)
+            if(response){
+                location.reload()
+            }
+            }else{
+                {()=>addAlert("")}
+            }
+            
       
 
           } catch (error) {

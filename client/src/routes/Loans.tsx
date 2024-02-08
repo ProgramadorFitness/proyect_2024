@@ -11,7 +11,11 @@ interface State {
   listLoans: Loan[]
 }
 
-const Loans = () => {
+type PropsRole={
+  type: string | null;
+}
+
+const Loans = ({type}: PropsRole) => {
 
   const[state, setState] = useState<State>({
     loans: null,
@@ -27,6 +31,10 @@ useEffect(() => {
     })();
 },[]);
 
+
+
+if(type == 'admin' || type == 'client' || type == 'supervisor' || type == 'collector')
+{
   return (
     <DefaultLayout>
         <div className='py-8 overflow-auto'>
@@ -34,6 +42,15 @@ useEffect(() => {
         </div>
     </DefaultLayout>
   )
+}else{
+  return(
+    <DefaultLayout>
+      <div className='py-8' >
+        No tiene permisos para este modulo
+      </div>
+    </DefaultLayout>
+  )
+}
 }
 
 export default Loans

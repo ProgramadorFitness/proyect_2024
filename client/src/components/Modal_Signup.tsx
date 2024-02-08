@@ -23,6 +23,8 @@ export default function Modal_Signup()  {
     const [name_last, setAllname] = useState("")
     const [id, setId] = useState("")
     const [id_c, setId_C] = useState("")
+    const [typeUser, setType] = useState("")
+
 
     const [data, setData] = useState<Collector[]>()
 
@@ -48,8 +50,11 @@ async function getCollectorsid() {
 
 }
 
-
-
+const  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const value = e.target.value;
+  setType(value)
+}
+    
     
     function handleChange(e: React.ChangeEvent) {
         const { name, value } = e.target as HTMLInputElement;
@@ -64,6 +69,9 @@ async function getCollectorsid() {
           setPassword(value);
           console.log(password)
         }
+        if(name=="type"){
+          setType(value)
+      }
 
         
     getCollectorsid()
@@ -77,7 +85,7 @@ async function getCollectorsid() {
 
         try {
             const api = new Api();
-            const response = await (await (api.postUser(id_c, username, password))).data
+            const response = await (await (api.postUser(id_c, username, password, typeUser))).data
             console.log(response)
       
            
@@ -85,6 +93,8 @@ async function getCollectorsid() {
             console.log(error);
           }
     }
+
+
 
 
      
@@ -150,6 +160,21 @@ async function getCollectorsid() {
                 onChange={handleChange}
               />
                 </div>
+
+                <div className="sm:col-span-3">
+                        <label  className="block text-sm font-medium leading-6 text-gray-900">Type</label>
+                        <select 
+                            onChange={handleSelectChange}
+                            id="type" 
+                            name="type"
+                            //value={genre}  
+                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                            <option >Select</option>
+                            <option value="admin">Manager</option>
+                            <option value="supervisor">Supervisor</option>
+                            <option value="collector">Collector</option>
+                            </select>
+                        </div>
               
 
                     <div className='pt-6 sm:col-span-3 flex'> 

@@ -11,7 +11,11 @@ interface State {
   listCollector: Collector[]
 }
 
-const Users = () => {
+type PropsRole={
+  type: string | null;
+}
+
+const Users = ({type}: PropsRole) => {
 
   const[state, setState] = useState<State>({
     collector: null,
@@ -26,6 +30,9 @@ const Users = () => {
     })();
 },[]);
 
+
+if(type == 'admin'  || type == 'supervisor' )
+{
   return (
     <DefaultLayout>
         <div className='py-8'>
@@ -33,6 +40,15 @@ const Users = () => {
         </div>
     </DefaultLayout>
   )
+}else{
+  return(
+    <DefaultLayout>
+      <div className='py-8' >
+        No tiene permisos para este modulo
+      </div>
+    </DefaultLayout>
+  )
+}
 }
 
 export default Users

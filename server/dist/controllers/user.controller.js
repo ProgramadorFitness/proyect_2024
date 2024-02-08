@@ -54,6 +54,8 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             msg: 'No existe un usuario con el nombre ' + username
         });
     }
+    const id = user.id_user;
+    //console.log(id)
     // Extraer type
     const typeVali = user.type;
     if (typeVali === 'admin') {
@@ -83,7 +85,8 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // Generamos token
     const token = jsonwebtoken_1.default.sign({
         username: username,
-        type: typeVali
+        type: typeVali,
+        id: id
     }, process.env.SECRET_KEY || 'ELTORPELLEGO', {});
     res.json(token);
 });

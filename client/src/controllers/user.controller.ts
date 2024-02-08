@@ -8,8 +8,8 @@ export default class Api {
         return axios.post("http://localhost:5001/api/users/login", {username, password})
     }
 
-    public postUser(id:string, username:string, password:string){
-        return axios.post("http://localhost:5001/api/users/create", {id: id, username :username, password: password})
+    public postUser(id:string, username:string, password:string, type:string){
+        return axios.post("http://localhost:5001/api/users/create", {id: id, username :username, password: password, type:type})
     }
 
     public postToken(token: string | null){
@@ -198,6 +198,11 @@ export default class Api {
     public getPaymentId(id:string){
         return axios.get(`http://localhost:5001/api/payments/pay/${id}`)
     }
+
+    public getPaymentClient2(id:string){
+        return axios.get(`http://localhost:5001/api/payments/pay2/${id}`)
+    }
+
 
     public postPaymentsLoans(
         id_loan:string,

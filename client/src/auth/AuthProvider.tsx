@@ -2,9 +2,10 @@ import { useContext, createContext, useState, useEffect } from "react";
 import { AuthResponse } from "../types/types";
 import { useNavigate } from "react-router-dom";
 import Api from "../controllers/user.controller";
+import { hasRole } from "./role";
 
 interface AuthProviderProps{
-    children: React.ReactNode;
+    children: React.ReactNode,
 }
 const AuthContext = createContext({
     isAuthenticated: false,
@@ -18,13 +19,16 @@ export function AuthProvider({children}: AuthProviderProps){
 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userType, setUSerType] = useState("")
+
+    /*return hasRole(arrRole, rol) ? <>{children}</> : null ;
+}*/
     
-    const [accessToken, setAccessToken] = useState<string | null>(null);
+   // const [accessToken, setAccessToken] = useState<string | null>(null);
     
 
 
 
-    async function checkAuth() {
+    /*async function checkAuth() {
 
         try {
             const token = localStorage.getItem('token')
@@ -41,7 +45,7 @@ export function AuthProvider({children}: AuthProviderProps){
         } catch (error) {
             console.log(error);
         }
-    }
+    }*/
 
 
 

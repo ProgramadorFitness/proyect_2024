@@ -181,6 +181,18 @@ class Server {
                 res.status(500).send('Error interno del servidor');
             }
         }));
+        //--Pay-ID-Sql-User
+        this.app.get("/api/payments/pay2/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, payments_controllers_1.clientPay)(id));
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
         //--Collections-Sql
         this.app.get("/api/collections/listjoin", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
             try {

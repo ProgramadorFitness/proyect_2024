@@ -6,6 +6,7 @@ const paymentsRoutes = (0, express_1.Router)();
 paymentsRoutes.get("/list");
 paymentsRoutes.get("/pay/:id");
 paymentsRoutes.get("/listjoin/:id");
+paymentsRoutes.get("/pay2/:id");
 paymentsRoutes.post("/create", payments_controllers_1.create);
 paymentsRoutes.put("/create2/:id", payments_controllers_1.create2);
 exports.default = paymentsRoutes;

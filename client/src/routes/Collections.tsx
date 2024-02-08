@@ -9,7 +9,11 @@ interface State {
   listPayment: Payment[]
 }
 
-const Collections = () => {
+type PropsRole={
+  type: string | null;
+}
+
+const Collections = ({type}: PropsRole) => {
 
   const[state, setState] = useState<State>({
     payment: null,
@@ -40,7 +44,8 @@ const Collections = () => {
     })();
 },[]);
 
-
+if(type == 'admin' || type == 'client' || type == 'supervisor' || type == 'collector')
+{
   return (
    <DefaultLayout>
     <div className='pt-6'>
@@ -55,6 +60,14 @@ const Collections = () => {
     </div>
    </DefaultLayout>
   )
+}else{
+  return(
+    <DefaultLayout>
+      <div className='py-8' >
+        No tiene permisos para este modulo
+      </div>
+    </DefaultLayout>
+  )
 }
-
+}
 export default Collections

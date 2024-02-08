@@ -5,10 +5,9 @@ import Api from '../controllers/user.controller';
 import Tabs_Table_Wallets from '../components/Tabs_Table_Wallets';
 
 
-/*interface State {
-  wallet: Wallet | null
-  listWallet: Wallet[]
-}*/
+type PropsRole={
+  type: string | null;
+}
 
 interface State1 {
   wallet1: Wallet | null
@@ -17,7 +16,7 @@ interface State1 {
 
 
 
-export const Wallets = () => {
+export const Wallets = ({type}: PropsRole) => {
     
   /*const[state, setState] = useState<State>({
     wallet: null,
@@ -42,12 +41,23 @@ useEffect(() => {
   })();
 },[]);
 
+if(type == 'admin')
+{
   return (
     <DefaultLayout>
       <div className='pt-6'>
       <Tabs_Table_Wallets data={state1.listWallet1}/>
       </div>
     </DefaultLayout>  )
+}else{
+  return(
+    <DefaultLayout>
+      <div className='py-8' >
+        No tiene permisos para este modulo
+      </div>
+    </DefaultLayout>
+  )
+}
 }
 
 export default Wallets

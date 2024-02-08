@@ -6,14 +6,15 @@ import Clients from './routes/Clients.tsx'
 import ProtectedRoute from './routes/ProtectedRoute.tsx'
 import { AuthProvider } from './auth/AuthProvider.tsx'
 import Loans from './routes/Loans.tsx'
-import Collectors from './routes/Collectors.tsx'
+import Collectors from './routes/Users.tsx'
 import Dashboard from './routes/Dashboard.tsx'
 import Wallets from './routes/Wallets.tsx'
 import Login from './routes/Login.tsx'
 import Payments from './routes/Payments.tsx'
 import Collections from './routes/Collections.tsx'
+import { ADMIN } from './auth/roles.ts'
 
-const type = localStorage.getItem('typeUser');
+const typeUser = localStorage.getItem('typeUser');
 const router = createBrowserRouter([
 
   {
@@ -28,19 +29,19 @@ const router = createBrowserRouter([
 
       { 
         path: '/wallet',
-        element: <Wallets/>
+        element: <Wallets type={typeUser}/>
       },
       { 
         path: '/client',
-        element: <Clients/>
+        element: <Clients type={typeUser}/>
       },
       { 
         path: '/loan', 
-        element: <Loans/> 
+        element: <Loans type={typeUser}/> 
       },
       {
         path: "/collector",
-        element: <Collectors />,
+        element: <Collectors type={typeUser}/>,
       },
       {
         path: "/dashboard",
@@ -48,11 +49,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/payment",
-        element: <Payments/>
+        element: <Payments type={typeUser}/>
       },
       {
         path: "/collection",
-        element: <Collections/>
+        element: <Collections type={typeUser}/>
       }
     ]
 
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-  <AuthProvider>
+  <AuthProvider >
     <RouterProvider router={router} />
   </AuthProvider>
 </React.StrictMode>,

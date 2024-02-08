@@ -2,18 +2,18 @@ import React, { useEffect, useState} from 'react'
 import { Client } from '../models/models';
 import DefaultLayout from '../layout/DefaultLayout';
 import Api from '../controllers/user.controller';
-import Modal_Client from '../components/Modal_Client';
 import Table_Client from '../components/Table_Client';
 
-
-
+type PropsRole={
+  type: string | null;
+}
 interface State {
     client: Client | null
     listClient: Client[]
 }
 
 
-const Clients = () => {
+const Clients = ({type}: PropsRole) => {
 
     const[state, setState] = useState<State>({
         client: null,
@@ -31,16 +31,27 @@ const Clients = () => {
         })();
     },[]);
 
-
-      return (
-      <div >
-      <DefaultLayout>
-        <div className='py-8' >
-          <Table_Client data={state.listClient} />
-        </div>
-      </DefaultLayout>
-      
-    </div>)
+      if(type == 'admin' || type == 'supervisor' || type == 'collector')
+      {
+        return (
+          <div >
+          <DefaultLayout>
+            <div className='py-8' >
+              <Table_Client data={state.listClient} />
+            </div>
+          </DefaultLayout>
+          
+        </div>)
+      }else{
+        return(
+          <DefaultLayout>
+            <div className='py-8' >
+              No tiene permisos para este modulo
+            </div>
+          </DefaultLayout>
+        )
+      }
+     
 
   
 }
