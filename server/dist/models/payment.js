@@ -12,28 +12,52 @@ const Payment = connection_1.default.define('payment', {
         autoIncrement: true
     },
     id_loan: {
-        type: sequelize_1.DataTypes.INTEGER
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
     },
     payment: {
-        type: sequelize_1.DataTypes.INTEGER
+        type: sequelize_1.DataTypes.INTEGER,
     },
     dues: {
-        type: sequelize_1.DataTypes.INTEGER
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
     },
     date: {
-        type: sequelize_1.DataTypes.DATE
+        type: sequelize_1.DataTypes.DATE,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
     },
     observation: {
-        type: sequelize_1.DataTypes.STRING
+        type: sequelize_1.DataTypes.STRING,
     },
     state: {
-        type: sequelize_1.DataTypes.STRING
+        type: sequelize_1.DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
     },
     realDate: {
-        type: sequelize_1.DataTypes.DATE
+        type: sequelize_1.DataTypes.DATE,
     },
     outBalance: {
-        type: sequelize_1.DataTypes.STRING
-    }
+        type: sequelize_1.DataTypes.STRING,
+    },
 });
 exports.default = Payment;

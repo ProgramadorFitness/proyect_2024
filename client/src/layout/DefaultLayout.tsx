@@ -7,7 +7,7 @@ interface DefaultLayoutProps {
 export default function DefaultLayout({children}: DefaultLayoutProps){
     return(
    <>
-   <div className='bg-slate-300'>
+   <div className='bg-slate-300 w-full'>
     <Navbar/>
     
     </div>

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.create2 = exports.clientPay = exports.payConsultId = exports.payJoin = exports.payJoinId = exports.createSql = exports.create = exports.list = void 0;
+exports.create2 = exports.collectorPay = exports.clientPay = exports.payConsultId = exports.payJoin = exports.payJoinId = exports.createSql = exports.create = exports.list = void 0;
 const connection_1 = require("../db/connection");
 const payment_1 = __importDefault(require("../models/payment"));
 const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -107,6 +107,21 @@ function clientPay(id) {
     });
 }
 exports.clientPay = clientPay;
+function collectorPay(id) {
+    return new Promise((resolve, reject) => {
+        //const sql = `Select payments.id as id, id_wallet , loans.id as id_loan, clients.genre as genre, payments.dues as duesPaid, clients.id as id_client, clients.neighborhood, clients.name as name, clients.lastName,  clients.city, clients.email, clients.id_number as id_number, clients.address, clients.phone, clients.phone2, clients.state, loans.value_initial, loans.value_end, loans.interest, loans.startLoan, loans.finishLoan, loans.dues, loans.duesValue, loans.paymentF, payments.dues as duesPay from loans inner join clients inner join payments on loans.id_client = clients.id and payments.id_loan = loans.id and clients.id = ${id}`;
+        const sql = `Select * from payments inner join loans inner join clients inner join wallets on payments.id_loan = loans.id and loans.id_client = clients.id and loans.id_wallet = wallets.id and wallets.id = ${id}`;
+        connection_1.connection1.query(sql, (error, results) => {
+            if (error) {
+                reject(error);
+            }
+            else {
+                resolve(results);
+            }
+        });
+    });
+}
+exports.collectorPay = collectorPay;
 const create2 = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { body } = req;

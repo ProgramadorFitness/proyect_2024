@@ -18,6 +18,11 @@ LoansRoutes.get("/listjoin")
 //--list join
 LoansRoutes.get("/listjoin/:id")
 
+//--list join
+LoansRoutes.get("/listjoinUser/:id")
+
+//--list join
+LoansRoutes.get("/listjoinUserCollector/:id")
 
 
 export default LoansRoutes

@@ -19,7 +19,11 @@ const Payments = ({type}: PropsRole) => {
     payment: null,
     listPayment:[]
 })
+//desabled for client
   const [disabled, setDisable] = useState(false);
+
+//call to API
+  const api = new Api()
 
 const id_loan = localStorage.getItem('id_loan_temp')
 const typeUser = String(localStorage.getItem('typeUser'));
@@ -33,15 +37,27 @@ const idUser = String(localStorage.getItem('idUser'));
 
 useEffect(() => {
 
+  
   (async function getPayId() {
-      const api = new Api()
 
       if(typeUser == 'client'){
+        setDisable(true)
         const response2 = (await api.getPaymentClient2(idUser)).data
         setState({payment:null, listPayment:response2})
         console.log(response2)
       }else if(typeUser == 'collector'){
-        console.log('hola')
+        const response3 = (await api.walletsConsultUser(idUser)).data
+        //console.log(response3[0].id_wallet)
+        if(id_loan == null){
+          const response2 = (await api.getPaymentCollector2(response3[0].id_wallet)).data
+          setState({payment:null, listPayment:response2})
+          const lsit1 = response2
+          console.log(lsit1)
+        }else{
+          const response2 = (await api.getPayId(String(id_loan))).data
+          setState({payment:null, listPayment:response2})
+        const lsit1 = response2
+        }
       }else{
         if(id_loan == null){
           const response2 = (await api.getPay()).data
@@ -64,18 +80,15 @@ if(type == 'admin' || type == 'client' || type == 'supervisor' || type == 'colle
 
   return (
     <DefaultLayout>
-      <div className='pt-6'>
+      <div className='pt-6 pl-10 '>
       <button 
-      disabled={true}
-      data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="block text-black bg-slate-300 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400" type="button"
-      onClick={ListAll}
+      disabled={disabled}
+      className=" block text-black bg-slate-400 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400" type="button"      onClick={ListAll}
     >
         List All
     </button>
-      </div>      
-      <div className='pt-6 overflow-auto'>
+      </div>   
       <Table_Payments data={state.listPayment}/>
-      </div>
     </DefaultLayout>
   )
 }else{

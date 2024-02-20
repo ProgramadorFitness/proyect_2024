@@ -4,13 +4,16 @@ import Api from '../controllers/user.controller';
 import { useAuth } from '../auth/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { FaUndo } from 'react-icons/fa';
+import { Toaster, toast } from 'react-hot-toast';
+import { HashLoader } from "react-spinners";
+import { GiTakeMyMoney } from "react-icons/gi";
 
 interface State {
   client: Client | null
   listClient: Client[]
 }
 
-interface Props {
+interface Props { 
   data: Client[]
 }
 
@@ -40,6 +43,8 @@ const Modal_Loan = () => {
     const [finishDate, setFinish] = useState("")
     const [dues, setDues] = useState("")
     const [duesValue, setDuesValue] = useState("")
+    const [loading, setLoading] = useState(false);
+
     const api = new Api();
 
 
@@ -202,12 +207,22 @@ const Modal_Loan = () => {
 
     async function handleSubmit(e: React.FormEvent) {
       e.preventDefault();
+      setLoading(true);
 
       try {
+        await new Promise(resolve => setTimeout(resolve, 2000))
         const response = await (await (api.postLoans(
           id_client, valueInicial, valueEnd, interest, state1, wallet, startDate, 
           finishDate, dues, duesValue, paymentF))).data['loans']
         const id_new_loan = response['id']
+          
+        if (!loading) {
+          const id = toast.success('Successfully');
+          setTimeout(() => {
+              toast.dismiss(id); 
+              location.reload()
+          }, 2000); 
+         
 
         if(response){
           if(paymentF == "diario"){
@@ -218,8 +233,8 @@ const Modal_Loan = () => {
               //console.log(datePayments.toLocaleDateString())
               const statePayments = "up to date"
               const response2 = await (await (api.postPaymentsLoans(
-                id_new_loan, String(index), datePayments, statePayments))).data
-              //console.log(id_new_loan, payment, String(index), datePayments, statePayments)
+                id_new_loan, String(index), datePayments,statePayments))).data
+              console.log(response2)
             }
           }else if(paymentF == "semanal"){
             for (let index = 1; index <= +dues; index++) {
@@ -227,11 +242,10 @@ const Modal_Loan = () => {
               const tmpDate  = new Date(startDate)
               const datePayments = addDaysToDate(tmpDate, quin).toUTCString()
               //console.log(datePayments.toLocaleDateString())
-              const statePayments = "up to date"
+              const statePayments = "up to date";
               const response2 = await (await (api.postPaymentsLoans(
                 id_new_loan, String(index), datePayments, statePayments))).data
-              //console.log(id_new_loan, payment, String(index), datePayments, statePayments)
-            }
+                console.log(response2)            }
           }else if(paymentF == "quicenal"){
             for (let index = 1; index <= +dues; index++) {
               const quin = 15*index
@@ -240,7 +254,7 @@ const Modal_Loan = () => {
               //console.log(datePayments.toLocaleDateString())
               const statePayments = "up to date"
               const response2 = await (await (api.postPaymentsLoans(
-                id_new_loan, String(index), datePayments, statePayments))).data
+                id_new_loan, String(index), datePayments,statePayments))).data
               //console.log(id_new_loan, payment, String(index), datePayments, statePayments)
             }
           }else {
@@ -251,18 +265,23 @@ const Modal_Loan = () => {
               //console.log(datePayments.toLocaleDateString())
               const statePayments = "up to date"
               const response2 = await (await (api.postPaymentsLoans(
-                id_new_loan, String(index), datePayments, statePayments))).data
+                id_new_loan, String(index), datePayments,statePayments))).data
               //console.log(id_new_loan, payment, String(index), datePayments, statePayments)
             }
           }
           
-        }
+        }}
 
-  
-      } catch (error) {
-        console.log(error);
-      }
+       
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed connection')
     }
+    finally {
+      // Detiene la carga después de la simulación
+      setLoading(false);
+    }
+  }
 
     
 
@@ -272,7 +291,8 @@ const Modal_Loan = () => {
     <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className=" block text-black bg-slate-400 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400" type="button"
     onClick={() => setShowModal(true)}
     >
-        Add Loan
+        <GiTakeMyMoney size={25} />
+
     </button>
 
     {showModal ? (
@@ -281,7 +301,10 @@ const Modal_Loan = () => {
         <div className=' p-8 fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex justify-center overflow-y-auto overflow-x-auto'>
             <div className='bg-slate-400  rounded flex flex-col items-center gap-5 overflow-y-auto overflow-x-auto'>
                 <div className="p-8 overflow-y-auto">
-                
+                {loading && (
+                <HashLoader loading={loading} size={50} color="#000000" />
+                )}
+                { !loading && (
                 <form onSubmit={handleSubmit}>
                     <div className="border-b  " >
                         <h2 className=" text-center text-2xl font-semibold leading-7 text-gray-900">Loan Information</h2>
@@ -526,8 +549,7 @@ const Modal_Loan = () => {
                             >Calculate</button>
                         </div>
                         <div className='px-8'>
-                            <button className="  px-8 block text-black bg-blue-300 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:ring-blue-400" type="button"
-                            onClick={handleSubmit}
+                            <button className="  px-8 block text-black bg-blue-300 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:ring-blue-400" 
                             >Save</button>
                         </div>
                         <div className=''>
@@ -537,9 +559,11 @@ const Modal_Loan = () => {
                         </div>
                     </div>
                 </form>
+                )}
                 </div>
             </div>
         </div>
+        <Toaster position="top-right"/>
         </>
     ): null}
     </>

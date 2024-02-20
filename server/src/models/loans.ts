@@ -10,45 +10,108 @@ const Loan = sequelize.define('loan', {
 
     id_client:{
         type: DataTypes.INTEGER,
-        
-    },
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     value_initial: {
-        type: DataTypes.INTEGER
-    }
-    ,
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     value_end:{
-        type: DataTypes.INTEGER
-    },
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     interest: {
-        type: DataTypes.INTEGER
-    },
-
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     state:{
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     id_wallet: {
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     startLoan: {
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     finishLoan: {
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     dues: {
-        type: DataTypes.INTEGER
-    },
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     duesValue: {
-        type: DataTypes.INTEGER
-    },
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     paymentF: {
-        type: DataTypes.STRING
-    }
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 }
     )
 

@@ -22,12 +22,28 @@ const Loans = ({type}: PropsRole) => {
     listLoans:[]
 })
 
+const api = new Api()
+
+const typeUser = String(localStorage.getItem('typeUser'));
+const idUser = String(localStorage.getItem('idUser'));
+
+
 useEffect(() => {
     (async function getLoans() {
-        const api = new Api()
+      if (typeUser == 'client') {
+        const response = (await api.getLoansIdUser(idUser)).data
+        setState({loans:null, listLoans:response})
+        console.log(state.listLoans)
+      } else if(typeUser == 'collector'){
+        const response = (await api.getLoansIdUserCollector(idUser)).data
+        setState({loans:null, listLoans:response})
+        console.log(state.listLoans)
+      }else{
         const response = (await api.getLoansjoin()).data
         setState({loans:null, listLoans:response})
         console.log(state.listLoans)
+      }
+
     })();
 },[]);
 

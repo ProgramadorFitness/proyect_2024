@@ -99,6 +99,14 @@ export default class Api {
         return axios.get(`http://localhost:5001/api/loans/listjoin/${id}`)
     }
 
+    public getLoansIdUser(id:string){
+        return axios.get(`http://localhost:5001/api/loans/listjoinUser/${id}`)
+    }
+
+    public getLoansIdUserCollector(id:string){
+        return axios.get(`http://localhost:5001/api/loans/listjoinUserCollector/${id}`)
+    }
+
     public postLoans(
         id_client:string,
         value_initial:string,
@@ -132,12 +140,45 @@ export default class Api {
 
 
     // Routes Collectors
+    public getUserIdent(id:number){
+        //return axios.get("http://localhost:5001/api/clients/list")
+        //const token =  localStorage.getItem('token')
+        return axios.get(`http://localhost:5001/api/collectors/One/${id}`)
+    }
+
+    public updateCollector(id:string,
+        id_number:string,
+        name:string,
+        lastName:string,
+        address:string,
+        genre:string,
+        email:string,
+        city:string,
+        neigt:string,
+        phone:string,
+        phone2:string,
+        state1:string){
+        return axios.put(`http://localhost:5001/api/collectors/update/${id}`,
+        {id_number:id_number,
+        name:name,
+        lastName:lastName,
+        address:address,
+        genre:genre,
+        email:email,
+        city:city,
+        neighborhood:neigt,
+        phone:phone,
+        phone2:phone2,
+        state:state1})
+    }
+
     public getCollectors(){
         return axios.get("http://localhost:5001/api/collectors/list")
     }
 
     public postCollector(
         id:string,
+        wallet:string,
         name:string,
         lastName:string,
         address:string,
@@ -149,6 +190,7 @@ export default class Api {
         state1:string){
         return axios.post("http://localhost:5001/api/collectors/create",{
         id_number:id,
+        id_wallet:wallet,
         name:name,
         lastName:lastName,
         address:address,
@@ -171,14 +213,34 @@ export default class Api {
         return axios.get("http://localhost:5001/api/wallets/list")
     }
 
+    public getWalletsjo(){
+        return axios.get("http://localhost:5001/api/wallets/listjoin")
+    }
+
     public getWalletsjoin(id:number){
         return axios.get(`http://localhost:5001/api/wallets/listjoin/${id}`)
+    }
+
+    public deleteWallet(id:number){
+        return axios.delete(`http://localhost:5001/api/wallets/delete/${id}`)
     }
 
     public postWallets(capital:string){
         return axios.post("http://localhost:5001/api/wallets/create", {capital:capital})
     }
 
+    public walletsConsultUser(id:string){
+        return axios.get(`http://localhost:5001/api/wallets/listjoinUser/${id}`)
+    }
+
+    public getWalletsId(id:number){
+        return axios.get(`http://localhost:5001/api/wallets/One/${id}`)
+    }
+
+    public updateWallet(id:string, capital:string){
+        return axios.put(`http://localhost:5001/api/wallets/update/${id}`,
+        {capital:capital})
+    }
     
     //Routes collections
     public getCollections(){
@@ -193,6 +255,14 @@ export default class Api {
         return axios.get(`http://localhost:5001/api/collections/listjoinID/${id}`)
     }
 
+    public getCollectionsJoinIDUser(id:string){
+        return axios.get(`http://localhost:5001/api/collections/listjoinIDUser/${id}`)
+    }
+
+    public getCollectionsJoinIDUserCollector(id:string){
+        return axios.get(`http://localhost:5001/api/collections/listjoinIDUserCollector/${id}`)
+    }
+
 
     // Routes Payments
     public getPaymentId(id:string){
@@ -201,6 +271,10 @@ export default class Api {
 
     public getPaymentClient2(id:string){
         return axios.get(`http://localhost:5001/api/payments/pay2/${id}`)
+    }
+
+    public getPaymentCollector2(id:string){
+        return axios.get(`http://localhost:5001/api/payments/pay3/${id}`)
     }
 
 

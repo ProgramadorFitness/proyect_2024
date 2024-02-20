@@ -12,7 +12,13 @@ const Wallet = connection_1.default.define('wallet', {
         autoIncrement: true
     },
     capital: {
-        type: sequelize_1.DataTypes.INTEGER
+        type: sequelize_1.DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
     }
 });
 exports.default = Wallet;

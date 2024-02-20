@@ -12,15 +12,17 @@ import LoansRoutes from '../routes/loans.routes';
 import CollectorsRoutes from '../routes/collectors.routes';
 import Collector from './collectors';
 import sequelize from '../db/connection';
-import { walletsConsult } from '../controllers/wallets.controller';
-import { loansConsult, loansConsultId } from '../controllers/loans.controller';
+import { walletsConsult, walletsConsultUser, walletsjOIN } from '../controllers/wallets.controller';
+import { loansConsult, loansConsultId, loansConsultIdClient, loansConsultIdCollector } from '../controllers/loans.controller';
 import { ClientsConsult } from '../controllers/client.controller';
 import { collectorConsult } from '../controllers/collectors.controller';
 import paymentsRoutes from '../routes/payments.routes';
 import Payment from './payment';
-import { clientPay, createSql, payConsultId, payJoin, payJoinId } from '../controllers/payments.controllers';
+import { clientPay, collectorPay, createSql, payConsultId, payJoin, payJoinId } from '../controllers/payments.controllers';
 import collectionsRoutes from '../routes/collections';
-import { listJoin, listJoinID } from '../controllers/collections.controller';
+import { listJoin, listJoinID, listJoinIDUser, listJoinIDUserCollector } from '../controllers/collections.controller';
+import documentsRouter from '../routes/pdfDocuments';
+import PdfDocument from './pdfDocument';
 
 
 
@@ -63,12 +65,37 @@ class Server {
         this.app.use("/api/collectors", CollectorsRoutes )
         this.app.use("/api/payments", paymentsRoutes )
         this.app.use("/api/collections", collectionsRoutes )
+        this.app.use("/api/pdfDocuments", documentsRouter )
         
         //--Walltes-Sql
         this.app.get("/api/wallets/listjoin/:id", async (req: Request, res: Response, any) => {
             const id = req.params.id
             try {
                 const results= await walletsConsult(id);
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+         //--Walltes-Sql-User
+         this.app.get("/api/wallets/listjoinUser/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id
+            try {
+                const results= await walletsConsultUser(id);
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+        //--Walltes-Sql-User
+        this.app.get("/api/wallets/listjoin", async (req: Request, res: Response, any) => {
+            try {
+                const results= await walletsjOIN();
                 res.json(results)
             } catch (error) {
                 console.error('Error al realizar la consulta:', error);
@@ -94,6 +121,32 @@ class Server {
             const id = req.params.id 
             try {
                 const results = (await loansConsultId(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+         //--Loan-ID-Sql-User
+         this.app.get("/api/loans/listjoinUser/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await loansConsultIdClient(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+         //--Loan-ID-Sql-User-Collector
+         this.app.get("/api/loans/listjoinUserCollector/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await loansConsultIdCollector(id));
                 res.json(results)
             } catch (error) {
                 console.error('Error al realizar la consulta:', error);
@@ -167,11 +220,25 @@ class Server {
             }
         } )
 
-        //--Pay-ID-Sql-User
+        //--Pay-ID-Sql-Client
+        
         this.app.get("/api/payments/pay2/:id", async (req: Request, res: Response, any) => {
             const id = req.params.id 
             try {
                 const results = (await clientPay(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+        //--Pay-ID-Sql-User
+        this.app.get("/api/payments/pay3/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id 
+            try {
+                const results = (await collectorPay(id));
                 res.json(results)
             } catch (error) {
                 console.error('Error al realizar la consulta:', error);
@@ -206,6 +273,32 @@ class Server {
             }
         } )
 
+          //--Collections-ID-Sql-User
+          this.app.get("/api/collections/listjoinIDUser/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id
+            try {
+                const results = (await listJoinIDUser(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+         //--Collections-ID-Sql-User-Collector
+         this.app.get("/api/collections/listjoinIDUserCollector/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id
+            try {
+                const results = (await listJoinIDUserCollector(id));
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
            //--Payments-ID-Sql
            
            /*this.app.get("/api/payments/createSql/:id", async (req: Request, res: Response, any) => {
@@ -231,6 +324,7 @@ class Server {
             await Collector.sync()
             await User.sync()
             await Payment.sync()
+            await PdfDocument.sync()
 
             console.log('Connection has been established successfully')
         } catch (error) {

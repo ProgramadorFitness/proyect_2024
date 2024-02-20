@@ -41,11 +41,11 @@ useEffect(() => {
   })();
 },[]);
 
-if(type == 'admin')
+if(type == 'admin'|| type == 'supervisor')
 {
   return (
     <DefaultLayout>
-      <div className='pt-6'>
+      <div className='pt-6 '>
       <Tabs_Table_Wallets data={state1.listWallet1}/>
       </div>
     </DefaultLayout>  )

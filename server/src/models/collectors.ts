@@ -8,41 +8,109 @@ const Collector = sequelize.define('collector', {
         autoIncrement: true
     },
     id_number:{
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
+    id_wallet:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     name: {
-        type: DataTypes.STRING
-    }
-    ,
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     lastName:{
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     address: {
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     email:{
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     phone: {
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     state: {
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     genre: {
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     city: {
-        type: DataTypes.STRING
-    },
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
     neighborhood: {
-        type: DataTypes.STRING
-    }
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 })
 
 export default Collector

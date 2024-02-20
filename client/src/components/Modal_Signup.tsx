@@ -2,6 +2,9 @@ import React from 'react';
 import { useState } from "react";
 import { Collector } from '../models/models';
 import Api from '../controllers/user.controller';
+import { Toaster, toast } from 'react-hot-toast';
+import { HashLoader } from "react-spinners";
+import { MdAssignmentInd } from "react-icons/md";
 
 interface State {
     collector: Collector | null
@@ -24,6 +27,8 @@ export default function Modal_Signup()  {
     const [id, setId] = useState("")
     const [id_c, setId_C] = useState("")
     const [typeUser, setType] = useState("")
+    const [loading, setLoading] = useState(false);
+
 
 
     const [data, setData] = useState<Collector[]>()
@@ -82,18 +87,31 @@ const  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
+        setLoading(true);
 
         try {
+          await new Promise(resolve => setTimeout(resolve, 2000))
+
             const api = new Api();
             const response = await (await (api.postUser(id_c, username, password, typeUser))).data
             console.log(response)
       
-           
-          } catch (error) {
-            console.log(error);
-          }
-    }
-
+            if (!loading) {
+              const id = toast.success('Successfully');
+              setTimeout(() => {
+                toast.dismiss(id); 
+                location.reload()
+              }, 2000); 
+            }
+        } catch (error) {
+          console.log(error);
+          toast.error('Failed connection')
+        }
+        finally {
+          // Detiene la carga después de la simulación
+          setLoading(false);
+        }
+      }
 
 
 
@@ -104,14 +122,19 @@ const  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="block text-black bg-slate-400 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400" type="button"
       onClick={() => setShowModal(true)}
       >
-          Assign  User
+          <MdAssignmentInd size={25}/>
+
       </button>
-  
+   
       {showModal ? (
           <>
        <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex justify-center items-center">
         <div className="bg-slate-400  rounded flex flex-col items-center gap-5">
           <div className="p-8">
+          {loading && (
+                <HashLoader loading={loading} size={50} color="#000000" />
+                )}
+                { !loading && (
             <form
               className=" justify-items-center text-center">
               <div className="border-b border-gray-900/10  " >
@@ -190,11 +213,12 @@ const  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                             >Save</button>
                         </div>
                     </div>
-
             </form>
+                )}
           </div>
         </div>
       </div>
+      <Toaster position="top-right"/>
           </>
       ): null}
       </>

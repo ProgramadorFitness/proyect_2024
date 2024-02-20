@@ -12,7 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@react-pdf/renderer": "^3.1.17",
-    "axios": "^1.6.2",
+    "axios": "^1.6.7",
+    "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
     "html2pdf.js": "^0.10.1",
     "jsonwebtoken": "^9.0.2",
@@ -21,14 +22,18 @@
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.4.1",
     "react-icons": "^4.12.0",
+    "react-paginate": "^8.2.0",
     "react-pdf": "^7.7.0",
     "react-router-dom": "^6.20.1",
     "react-spinners": "^0.13.8",
-    "react-to-print": "^2.14.15"
+    "react-to-print": "^2.14.15",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.5",
+    "@types/jspdf": "^2.0.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",

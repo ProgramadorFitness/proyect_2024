@@ -58,6 +58,8 @@ const payment_1 = __importDefault(require("./payment"));
 const payments_controllers_1 = require("../controllers/payments.controllers");
 const collections_1 = __importDefault(require("../routes/collections"));
 const collections_controller_1 = require("../controllers/collections.controller");
+const pdfDocuments_1 = __importDefault(require("../routes/pdfDocuments"));
+const pdfDocument_1 = __importDefault(require("./pdfDocument"));
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -86,11 +88,35 @@ class Server {
         this.app.use("/api/collectors", collectors_routes_1.default);
         this.app.use("/api/payments", payments_routes_1.default);
         this.app.use("/api/collections", collections_1.default);
+        this.app.use("/api/pdfDocuments", pdfDocuments_1.default);
         //--Walltes-Sql
         this.app.get("/api/wallets/listjoin/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             try {
                 const results = yield (0, wallets_controller_1.walletsConsult)(id);
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Walltes-Sql-User
+        this.app.get("/api/wallets/listjoinUser/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = yield (0, wallets_controller_1.walletsConsultUser)(id);
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Walltes-Sql-User
+        this.app.get("/api/wallets/listjoin", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const results = yield (0, wallets_controller_1.walletsjOIN)();
                 res.json(results);
             }
             catch (error) {
@@ -114,6 +140,30 @@ class Server {
             const id = req.params.id;
             try {
                 const results = (yield (0, loans_controller_1.loansConsultId)(id));
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Loan-ID-Sql-User
+        this.app.get("/api/loans/listjoinUser/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, loans_controller_1.loansConsultIdClient)(id));
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Loan-ID-Sql-User-Collector
+        this.app.get("/api/loans/listjoinUserCollector/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, loans_controller_1.loansConsultIdCollector)(id));
                 res.json(results);
             }
             catch (error) {
@@ -181,11 +231,23 @@ class Server {
                 res.status(500).send('Error interno del servidor');
             }
         }));
-        //--Pay-ID-Sql-User
+        //--Pay-ID-Sql-Client
         this.app.get("/api/payments/pay2/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             try {
                 const results = (yield (0, payments_controllers_1.clientPay)(id));
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Pay-ID-Sql-User
+        this.app.get("/api/payments/pay3/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, payments_controllers_1.collectorPay)(id));
                 res.json(results);
             }
             catch (error) {
@@ -216,6 +278,30 @@ class Server {
                 res.status(500).send('Error interno del servidor');
             }
         }));
+        //--Collections-ID-Sql-User
+        this.app.get("/api/collections/listjoinIDUser/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, collections_controller_1.listJoinIDUser)(id));
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
+        //--Collections-ID-Sql-User-Collector
+        this.app.get("/api/collections/listjoinIDUserCollector/:id", (req, res, any) => __awaiter(this, void 0, void 0, function* () {
+            const id = req.params.id;
+            try {
+                const results = (yield (0, collections_controller_1.listJoinIDUserCollector)(id));
+                res.json(results);
+            }
+            catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+            }
+        }));
         //--Payments-ID-Sql
         /*this.app.get("/api/payments/createSql/:id", async (req: Request, res: Response, any) => {
          const id = req.params.id
@@ -239,6 +325,7 @@ class Server {
                 yield collectors_1.default.sync();
                 yield user_1.default.sync();
                 yield payment_1.default.sync();
+                yield pdfDocument_1.default.sync();
                 console.log('Connection has been established successfully');
             }
             catch (error) {

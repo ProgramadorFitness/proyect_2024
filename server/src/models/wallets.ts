@@ -9,8 +9,14 @@ const Wallet = sequelize.define('wallet', {
     },
 
     capital: {
-        type: DataTypes.INTEGER
-    }
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      }
 })
 
 export default Wallet

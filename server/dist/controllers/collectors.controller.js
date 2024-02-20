@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.collectorConsult = exports.delet = exports.create = exports.list = void 0;
+exports.collectorConsult = exports.update = exports.One = exports.delet = exports.create = exports.list = void 0;
 const collectors_1 = __importDefault(require("../models/collectors"));
 const connection_1 = require("../db/connection");
 const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -46,6 +46,37 @@ const delet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.delet = delet;
+const One = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const collector = yield collectors_1.default.findOne({ where: { id: id } });
+        return res.status(200).json(collector);
+    }
+    catch (error) {
+        return res.status(500).json({ "message": "Hubo un error", "error": error });
+    }
+});
+exports.One = One;
+const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { body } = req;
+    try {
+        const collector = yield collectors_1.default.findByPk(id);
+        if (collector) {
+            yield collector.update(body);
+            return res.status(200).json({ "message": "Client update" });
+        }
+        else {
+            res.status(404).json({
+                msg: "No existe este cliente"
+            });
+        }
+    }
+    catch (error) {
+        return res.status(500).json({ "message": "Hubo un error", "error": error });
+    }
+});
+exports.update = update;
 function collectorConsult(id) {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM collectors WHERE id_number = '${id}'`;

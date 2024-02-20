@@ -12,6 +12,7 @@ export const list: RequestHandler = async (req, res) => {
     }
 }
 
+
 export const create: RequestHandler = async (req, res) => {
     try {
         await Collector.create({ ...req.body })
@@ -30,6 +31,36 @@ export const delet: RequestHandler = async (req, res) => {
         return res.status(500).json({"message": "Hubo un error", "error": error})
     }
 }
+
+export const One: RequestHandler = async (req, res) => {
+    const {id} = req.params
+    try {
+        const collector =await Collector.findOne({where: {id:id}})
+        return res.status(200).json(collector)
+    } catch (error) {
+        return res.status(500).json({"message": "Hubo un error", "error": error})
+    }
+}
+
+
+export const update: RequestHandler = async (req, res) => {
+    const {id} = req.params;
+    const {body} = req;
+  
+    try {
+    const collector = await Collector.findByPk(id);
+      if(collector){
+        await collector.update(body)
+        return res.status(200).json({"message":"Client update"})
+      }else{
+        res.status(404).json({
+          msg: "No existe este cliente"
+        })
+      }      
+    } catch (error) {
+        return res.status(500).json({"message": "Hubo un error", "error": error})
+    }
+  }
 
 export  function collectorConsult(id:string) {
     

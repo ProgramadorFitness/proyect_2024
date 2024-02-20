@@ -13,4 +13,8 @@ LoansRoutes.delete("/delete/:id", loans_controller_1.delet);
 LoansRoutes.get("/listjoin");
 //--list join
 LoansRoutes.get("/listjoin/:id");
+//--list join
+LoansRoutes.get("/listjoinUser/:id");
+//--list join
+LoansRoutes.get("/listjoinUserCollector/:id");
 exports.default = LoansRoutes;

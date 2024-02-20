@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useRef, useState} from 'react'
 import { Client } from '../models/models';
 import DefaultLayout from '../layout/DefaultLayout';
 import Api from '../controllers/user.controller';
@@ -29,19 +29,18 @@ const Clients = ({type}: PropsRole) => {
             console.log(response)
             setState({client:null, listClient:response})
         })();
+
     },[]);
 
       if(type == 'admin' || type == 'supervisor' || type == 'collector')
       {
         return (
-          <div >
           <DefaultLayout>
             <div className='py-8' >
-              <Table_Client data={state.listClient} />
+              <Table_Client data={state.listClient} ></Table_Client>
             </div>
           </DefaultLayout>
-          
-        </div>)
+        )
       }else{
         return(
           <DefaultLayout>

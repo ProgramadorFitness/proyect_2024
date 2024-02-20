@@ -13,20 +13,40 @@ const User = connection_1.default.define('user', {
     },
     id_user: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
     },
     username: {
         type: sequelize_1.DataTypes.STRING,
         unique: true,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
     },
     password: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
     },
     type: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
-    }
+        allowNull: false,
+        validate: {
+            notEmpty: {
+                msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+            },
+        },
+    },
 });
 exports.default = User;

@@ -10,24 +10,44 @@ const User = sequelize.define('user', {
 
     id_user: {
         type: DataTypes.STRING,
-        allowNull: false 
-    },
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     username:{
         type: DataTypes.STRING,
         unique: true,
-        allowNull: false
-    },
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     password: {
         type: DataTypes.STRING,
-        allowNull: false 
-    },
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 
     type: {
         type: DataTypes.STRING,
-        allowNull: false 
-    }
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
+          },
+        },
+      },
 }
     )
  

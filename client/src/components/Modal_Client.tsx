@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { Client } from '../models/models';
 import Api from '../controllers/user.controller';
 import { FaUserPlus } from 'react-icons/fa';
-
+import { Toaster, toast } from 'react-hot-toast';
+import { HashLoader } from "react-spinners";
 interface State {
     client: Client | null
     listClient: Client[]
   }
   
   interface Props {
-    data: Client[]
+    data: Client[] 
   }
 
   
@@ -28,6 +29,8 @@ const Modal_Client = () => {
     const [phone2, setPhone2] = useState("")
     const [state1, setState1] = useState("activo")
     const[file, setFile] = useState(null)
+    const [loading, setLoading] = useState(false);
+
 
     
     const [data, setData] = useState<Client[]>()
@@ -78,15 +81,20 @@ const Modal_Client = () => {
   }
 
   const  handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
+    const {name, value} = e.target;
+    if(name == 'genre'){
     setGenre(value)
+    }
+    console.log(genre)
   }
 
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    
+    setLoading(true);
+
     try {
+        await new Promise(resolve => setTimeout(resolve, 2000))
         const api = new Api();
         const response = await (await (api.postClient(id,
           name,
@@ -99,20 +107,21 @@ const Modal_Client = () => {
           phone,
           phone2,
           state1))).data
-        //console.log(response)
 
-        if(response.ok){
-            /*<div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-            <strong className="font-bold">Holy smokes!</strong>
-            <span className="block sm:inline">Something seriously bad happened.</span>
-            </div>*/
-
-            location.reload()
-        }
-  
-       
+          if (!loading) {
+            const id = toast.success('Successfully');
+            setTimeout(() => {
+                toast.dismiss(id); 
+                location.reload()
+            }, 2000); 
+            }
       } catch (error) {
         console.log(error);
+        toast.error('Failed connection')
+      }
+      finally {
+        // Detiene la carga después de la simulación
+        setLoading(false);
       }
     }
 
@@ -123,15 +132,19 @@ const Modal_Client = () => {
     <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className=" block text-black bg-slate-400 hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-300 dark:hover:bg-slate-400 dark:focus:ring-slate-400" type="button"
     onClick={() => setShowModal(true)}
     >
-        <FaUserPlus/>Add Client
+        <FaUserPlus size={25}/>
     </button>
 
     {showModal ? (
         <>
-        <div className=' p-8 fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex justify-center  overflow-y-auto'>
+        <div className='p-8 fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex justify-center  overflow-y-auto'>
             <div className='bg-slate-400  rounded flex flex-col items-center gap-5 overflow-y-auto '>
                 <div className="p-8">
-                <form >
+                {loading && (
+                <HashLoader loading={loading} size={50} color="#000000" />
+                )}
+                { !loading && (
+                <form onSubmit={handleSubmit}>
                     <div className="border-b border-gray-900/10  " >
                         <h2 className=" text-center text-2xl font-semibold leading-7 text-gray-900">Personal Information</h2>
                     </div>
@@ -254,16 +267,17 @@ const Modal_Client = () => {
                             >Cancel</button>
                         </div>
                         <div className='px-8'>
-                            <button className="  px-8 block text-black bg-blue-300 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:ring-blue-400" type="button"
-                            onClick={handleSubmit}
+                            <button className="  px-8 block text-black bg-blue-300 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-300 dark:hover:bg-blue-400 dark:focus:ring-blue-400"
+                            
                             >Save</button>
                         </div>
                     </div>
                 </form>
+                )}
                 </div>
             </div>
         </div>
-        
+        <Toaster position="top-right"/>
         </>
     ): null}
     </>

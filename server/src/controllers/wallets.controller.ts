@@ -14,6 +14,35 @@ export const list: RequestHandler = async (req, res) => {
     }
 }
 
+export const One: RequestHandler = async (req: Request, res: Response) => {
+  const {id} = req.params
+  try {
+      const wallets = await Wallet.findOne({where: {id:id}})
+      return res.status(200).json(wallets)
+  } catch (error) {
+      return res.status(500).json({"message": "Hubo un error", "error": error})
+  }
+}
+
+export const update: RequestHandler = async (req: Request, res: Response) => {
+  const {id} = req.params;
+  const {body} = req;
+
+  try {
+  const wallets = await Wallet.findByPk(id);
+    if(wallets){
+      await wallets.update(body)
+      return res.status(200).json({"message":"wallet update"})
+    }else{
+      res.status(404).json({
+        msg: "No existe esta wallet"
+      })
+    }      
+  } catch (error) {
+      return res.status(500).json({"message": "Hubo un error", "error": error})
+  }
+}
+
 export const create: RequestHandler = async (req, res) => {
     try {
         await Wallet.create({...req.body})
@@ -35,7 +64,35 @@ export const delet: RequestHandler = async (req, res) => {
 }
 export  function walletsConsult(id:string) {
     return new Promise((resolve, reject) => {
-      const sql = `Select loans.id, clients.name, clients.email, clients.lastName, clients.id_number, clients.address, clients.phone, clients.phone2, loans.state, loans.value_initial, loans.value_end, loans.interest from loans inner join clients join wallets join collectors  on loans.id_client = clients.id and loans.id_wallet = wallets.id and  wallets.id_collector = collectors.id  and wallets.id = ${id}`;
+      const sql = `Select loans.id, clients.name, clients.email, clients.lastName, clients.id_number, clients.address, clients.phone, clients.phone2, loans.state, loans.value_initial, loans.value_end, loans.interest from loans inner join clients join wallets join collectors  on loans.id_client = clients.id and loans.id_wallet = wallets.id and wallets.id = collectors.id_wallet and wallets.id = ${id}`;
+      
+      connection1.query(sql, (error: QueryError, results: any) => {
+        if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+      })
+    });
+  }
+
+  export  function walletsjOIN() {
+    return new Promise((resolve, reject) => {
+      const sql = 'select count(loans.id) as loans, wallets.id as id, wallets.capital from wallets inner join loans on wallets.id = loans.id_wallet';
+      
+      connection1.query(sql, (error: QueryError, results: any) => {
+        if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+      })
+    });
+  }
+
+  export  function walletsConsultUser(id:string) {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT id_wallet FROM collectors WHERE id = ${id}`;
       
       connection1.query(sql, (error: QueryError, results: any) => {
         if (error) {

@@ -11,6 +11,8 @@ paymentsRoutes.get("/listjoin/:id");
 
 paymentsRoutes.get("/pay2/:id");
 
+paymentsRoutes.get("/pay3/:id");
+
 paymentsRoutes.post("/create", create);
 
 paymentsRoutes.put("/create2/:id", create2);
