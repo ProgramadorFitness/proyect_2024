@@ -60,6 +60,7 @@ const collections_1 = __importDefault(require("../routes/collections"));
 const collections_controller_1 = require("../controllers/collections.controller");
 const pdfDocuments_1 = __importDefault(require("../routes/pdfDocuments"));
 const pdfDocument_1 = __importDefault(require("./pdfDocument"));
+const path = require('path');
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -78,6 +79,7 @@ class Server {
         this.app.use(express_1.default.json());
         this.app.use((0, cors_1.default)());
         this.app.use((0, express_1.urlencoded)({ extended: false }));
+        this.app.use(express_1.default.static(path.join(__dirname, '../dbImages/')));
     }
     routes() {
         this.app.use('/api/users', user_routes_1.default);

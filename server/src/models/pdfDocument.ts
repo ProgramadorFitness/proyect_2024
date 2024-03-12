@@ -2,24 +2,23 @@ import { DataTypes, Model } from "sequelize"
 import  sequelize  from "../db/connection"
 
 const PdfDocument = sequelize.define('PdfDocument', {
-    originalname: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    mimetype: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    filename: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    size: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    id_cliente:{type: DataTypes.STRING,
-    }
+ 
+  type: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  data: {
+    type: DataTypes.BLOB,
+    allowNull: false,
+  },
+  id_client: {
+    type: DataTypes.STRING, 
+    allowNull: false,
+  }
   });
   
   export default PdfDocument

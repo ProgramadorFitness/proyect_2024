@@ -18,7 +18,7 @@ export const create: RequestHandler = async (req: Request, res: Response) => {
   
     try {
         await Payment.create({...req.body})
-        return res.status(200).json({"message":"Client save"})
+        return res.status(200).json({"message":"Payment save"})
     } catch (error) {
         return res.status(500).json({"message": "Hubo un error", "error": error})
     }

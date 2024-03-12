@@ -6,23 +6,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../db/connection"));
 const PdfDocument = connection_1.default.define('PdfDocument', {
-    originalname: {
+    type: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
-    mimetype: {
+    name: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
     },
-    filename: {
+    data: {
+        type: sequelize_1.DataTypes.BLOB,
+        allowNull: false,
+    },
+    id_client: {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false,
-    },
-    size: {
-        type: sequelize_1.DataTypes.INTEGER,
-        allowNull: false,
-    },
-    id_cliente: { type: sequelize_1.DataTypes.STRING,
     }
 });
 exports.default = PdfDocument;

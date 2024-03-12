@@ -341,20 +341,26 @@ const Table_Client = ({ data }: Props) => {
 
     const handleUpload = async (id_id: string) => {
         if (!selectedFile) {
-            console.error('Selecciona un archivo PDF antes de subirlo.');
+            alert('Selecciona un archivo PDF antes de subirlo.');
             return;
         }
-        //const id_id:string = "9";
+       
         try {
+            //console.log(selectedFile)
             const formData = new FormData();
             formData.append('pdf', selectedFile);
-            formData.append('id_cliente', id_id);
+            formData.append('id_client', id_id);
             const response = await axios.post('http://localhost:5001/api/pdfDocuments/upload', formData);
-
             console.log('Respuesta del servidor:', response.data);
+            setSelectedFile(null)
+            setSelectedFileName('Click to upload')
         } catch (error) {
+            // Maneja los errores de manera adecuada
             console.error('Error al subir el archivo PDF:', error);
-        }
+        
+            // Muestra un mensaje de error al usuario
+            alert('Error al subir el archivo PDF. Por favor, inténtalo de nuevo.');
+         }
     }
 
 
@@ -604,7 +610,7 @@ const Table_Client = ({ data }: Props) => {
                                     <div className="flex border-x-4 border-slate-500 pl-2 font-medium text-blue-800 dark:text-blue-800 hover:underline" >
                                         <label htmlFor="dropzone-file">
                                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                            <span className="font-semibold">{selectedFileName || 'Click to upload'}</span></p>  
+                                            <span id='file-input' className="font-semibold">{selectedFileName || 'Click to upload'}</span></p>  
                                         <input id="dropzone-file" type="file" accept=".pdf" onChange={handleFileChange} className='px-1 hidden' />
                                         </label>
                                         <button onClick={() => handleUpload(String(item.id))} type='button'><FaFileUpload size={25} /></button>

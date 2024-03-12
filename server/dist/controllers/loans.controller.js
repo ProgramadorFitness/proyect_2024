@@ -29,7 +29,7 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const loans = yield loans_1.default.create(Object.assign(Object.assign({}, req.body), { returning: true }));
         //console.log(loans)
-        return res.status(200).json({ loans, "message": "Client save" });
+        return res.status(200).json({ loans, "message": "Loan save" });
     }
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });

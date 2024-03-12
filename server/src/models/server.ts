@@ -23,7 +23,7 @@ import collectionsRoutes from '../routes/collections';
 import { listJoin, listJoinID, listJoinIDUser, listJoinIDUserCollector } from '../controllers/collections.controller';
 import documentsRouter from '../routes/pdfDocuments';
 import PdfDocument from './pdfDocument';
-
+const path = require('path');
 
 
 
@@ -54,6 +54,7 @@ class Server {
         this.app.use(express.json())
         this.app.use(cors())
         this.app.use(urlencoded({extended: false}))
+        this.app.use(express.static(path.join(__dirname, '../dbImages/')))
     }
 
     routes(){

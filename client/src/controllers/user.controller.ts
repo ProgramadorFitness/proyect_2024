@@ -107,7 +107,7 @@ export default class Api {
         return axios.get(`http://localhost:5001/api/loans/listjoinUserCollector/${id}`)
     }
 
-    public postLoans(
+    public postLoans( 
         id_client:string,
         value_initial:string,
         value_end:string, 
@@ -315,4 +315,5 @@ export default class Api {
         state:state
         })
     }
+
 }

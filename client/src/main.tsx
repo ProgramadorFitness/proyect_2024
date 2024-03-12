@@ -13,6 +13,7 @@ import Login from './routes/Login.tsx'
 import Payments from './routes/Payments.tsx'
 import Collections from './routes/Collections.tsx'
 import { ADMIN } from './auth/roles.ts'
+import PdfView from './routes/PdfView.tsx'
 
 const typeUser = localStorage.getItem('typeUser');
 const router = createBrowserRouter([
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/collection",
         element: <Collections type={typeUser}/>
+      },
+      {
+        path: "/pdf",
+        element: <PdfView />
       }
     ]
 
