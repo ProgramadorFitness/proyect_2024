@@ -73,32 +73,44 @@ exports.uploadPdf = uploadPdf;
 const getPdfMetadata = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        const pdfDocument = yield pdfDocument_1.default.findAll({ where: { id_client: id } });
-        const pdfDir = path.join(__dirname, '../dbImages');
+        const documentModels = yield pdfDocument_1.default.findAll({ where: { id_client: id } });
+        const documentDir = path.join(__dirname, '../dbImages');
         // Asegurarse de que el directorio exista, si no, créalo
-        if (!fs.existsSync(pdfDir)) {
-            fs.mkdirSync(pdfDir, { recursive: true });
+        if (!fs.existsSync(documentDir)) {
+            fs.mkdirSync(documentDir, { recursive: true });
         }
-        pdfDocument.forEach((pdf) => __awaiter(void 0, void 0, void 0, function* () {
+        for (const document of documentModels) {
             try {
-                // Asumiendo que pdf.data es un campo BLOB
-                const bufferData = yield pdf.getDataValue('data');
-                if (bufferData instanceof Buffer) {
-                    fs.writeFileSync(path.join(pdfDir, `${pdf.id}.pdf`), bufferData);
+                const bufferData = document.getDataValue('data');
+                const mimeType = document.get('mimeType'); // Asegurarte de que es una cadena
+                if (bufferData) {
+                    let extension = document.get('type');
+                    console.log(extension);
+                    // Manejar diferentes tipos de archivos según su tipo (type)
+                    if (extension === 'application/pdf') {
+                        extension = 'pdf';
+                    }
+                    else if (extension === 'image/jpeg' || extension === 'image/png') {
+                        extension = 'png'; // Puedes ajustar según los tipos de imágenes que manejes
+                    }
+                    const fileName = `${document.get('id')}.${extension}`;
+                    const filePath = path.join(documentDir, fileName);
+                    fs.writeFileSync(filePath, bufferData);
+                    console.log(`Documento con ID ${document.get('id')} guardado en ${filePath}`);
                 }
                 else {
-                    console.error(`El campo 'data' no es un Buffer para el PDF con ID ${pdf.id}`);
+                    console.error(`El campo 'data' no es un Buffer para el documento con ID ${document.get('id')}`);
                 }
             }
             catch (error) {
-                console.error(`Error al obtener 'data' para el PDF con ID ${pdf.id}:`, error);
+                console.error(`Error al obtener 'data' para el documento con ID ${document.get('id')}:`, error);
             }
-        }));
-        const pdfFiles = fs.readdirSync(pdfDir);
-        return res.status(200).json(pdfFiles);
+        }
+        const documentFiles = fs.readdirSync(documentDir);
+        return res.status(200).json(documentFiles);
     }
     catch (error) {
-        console.error('Error al obtener metadatos de PDF:', error);
+        console.error('Error al obtener metadatos del documento:', error);
         return res.status(500).json({ message: 'Hubo un error', error: error });
     }
 });

@@ -611,12 +611,12 @@ const Table_Client = ({ data }: Props) => {
                                         <label htmlFor="dropzone-file">
                                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                                             <span id='file-input' className="font-semibold">{selectedFileName || 'Click to upload'}</span></p>  
-                                        <input id="dropzone-file" type="file" accept=".pdf" onChange={handleFileChange} className='px-1 hidden' />
+                                        <input id="dropzone-file" type="file"  onChange={handleFileChange} className='px-1 hidden' />
                                         </label>
                                         <button onClick={() => handleUpload(String(item.id))} type='button'><FaFileUpload size={25} /></button>
                                     </div>
                                     <div className="border-l pl-2 font-medium text-blue-800 dark:text-blue-800 hover:underline" >
-                                        <PDFViewer pdfId={String(item.id)} />
+                                        <PDFViewer clientId={String(item.id)} />
 
                                     </div>
                                 </td>
