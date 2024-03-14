@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -16,18 +7,18 @@ exports.loginUser = exports.newUser = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const newUser = async (req, res) => {
     const { id, username, password, type } = req.body;
     //--Validacion de usuario
-    const user = yield user_1.default.findOne({ where: { username: username } });
+    const user = await user_1.default.findOne({ where: { username: username } });
     if (user) {
         return res.status(400).json({
             msg: 'Usuario existente'
         });
     }
-    const hashPassword = yield bcrypt_1.default.hash(password, 10);
+    const hashPassword = await bcrypt_1.default.hash(password, 10);
     try {
-        yield user_1.default.create({
+        await user_1.default.create({
             id_user: id,
             username: username,
             password: hashPassword,
@@ -42,13 +33,13 @@ const newUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             msg: 'Error:', error
         });
     }
-});
+};
 exports.newUser = newUser;
-const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const loginUser = async (req, res) => {
     const { username, password } = req.body;
     console.log(res);
     //--Validacion de usuario
-    const user = yield user_1.default.findOne({ where: { username: username } });
+    const user = await user_1.default.findOne({ where: { username: username } });
     if (!user) {
         return res.status(400).json({
             msg: 'No existe un usuario con el nombre ' + username
@@ -74,7 +65,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.log('El usuario es un invitado.');
     }
     // Validamos password
-    const passwordVali = yield bcrypt_1.default.compare(password, user.password);
+    const passwordVali = await bcrypt_1.default.compare(password, user.password);
     console.log(passwordVali);
     if (!passwordVali) {
         return res.status(400).json({
@@ -89,5 +80,5 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         id: id
     }, process.env.SECRET_KEY || 'ELTORPELLEGO', {});
     res.json(token);
-});
+};
 exports.loginUser = loginUser;

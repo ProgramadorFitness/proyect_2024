@@ -3,25 +3,25 @@ import Client from './clients';
 import User from './user';
 import Loan from './loans';
 import Wallet from './wallets';
-import routesUser from '../routes/user.routes';
+import routesUser from '../views/user.routes';
 import cors from 'cors'
-import ClientRoutes from '../routes/client.routes';
-import routesValidate from '../routes/validate.routes';
-import WalletsRoutes from '../routes/wallets.routes';
-import LoansRoutes from '../routes/loans.routes';
-import CollectorsRoutes from '../routes/collectors.routes';
+import ClientRoutes from '../views/client.routes';
+import routesValidate from '../views/validate.routes';
+import WalletsRoutes from '../views/wallets.routes';
+import LoansRoutes from '../views/loans.routes';
+import CollectorsRoutes from '../views/collectors.routes';
 import Collector from './collectors';
-import sequelize from '../db/connection';
-import { walletsConsult, walletsConsultUser, walletsjOIN } from '../controllers/wallets.controller';
+import sequelize from './db/connection';
+import { listOne, walletsConsult, walletsConsultUser, walletsConsultUserName, walletsjOIN } from '../controllers/wallets.controller';
 import { loansConsult, loansConsultId, loansConsultIdClient, loansConsultIdCollector } from '../controllers/loans.controller';
 import { ClientsConsult } from '../controllers/client.controller';
 import { collectorConsult } from '../controllers/collectors.controller';
-import paymentsRoutes from '../routes/payments.routes';
+import paymentsRoutes from '../views/payments.routes';
 import Payment from './payment';
-import { clientPay, collectorPay, createSql, payConsultId, payJoin, payJoinId } from '../controllers/payments.controllers';
-import collectionsRoutes from '../routes/collections';
+import { addBlackList, clientPay, collectorPay, createSql, payConsultId, payJoin, payJoinId } from '../controllers/payments.controllers';
+import collectionsRoutes from '../views/collections';
 import { listJoin, listJoinID, listJoinIDUser, listJoinIDUserCollector } from '../controllers/collections.controller';
-import documentsRouter from '../routes/pdfDocuments';
+import documentsRouter from '../views/pdfDocuments';
 import PdfDocument from './pdfDocument';
 const path = require('path');
 
@@ -81,11 +81,47 @@ class Server {
             }
         } )
 
+        this.app.get("/api/wallets/listOne", async (req: Request, res: Response, any) => {
+            const id = req.params.id
+            try {
+                const results= await listOne();
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+        this.app.get("/api/payments/addBlackList", async (req: Request, res: Response, any) => {
+            const id = req.params.id
+            try {
+                const results= await addBlackList();
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
          //--Walltes-Sql-User
          this.app.get("/api/wallets/listjoinUser/:id", async (req: Request, res: Response, any) => {
             const id = req.params.id
             try {
-                const results= await walletsConsultUser(id);
+                const results= await walletsConsultUser(id);walletsConsultUserName
+                res.json(results)
+            } catch (error) {
+                console.error('Error al realizar la consulta:', error);
+                res.status(500).send('Error interno del servidor');
+                
+            }
+        } )
+
+        this.app.get("/api/wallets/listjoinUserName/:id", async (req: Request, res: Response, any) => {
+            const id = req.params.id
+            try {
+                const results= await walletsConsultUserName(id);
                 res.json(results)
             } catch (error) {
                 console.error('Error al realizar la consulta:', error);

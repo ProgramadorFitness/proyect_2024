@@ -1,7 +1,10 @@
 import express,{ RequestHandler, Request, Response} from "express";
 import { QueryError } from "mysql2";
 import Wallet from "../models/wallets";
-import { connection1 } from "../db/connection";
+import { connection1 } from "../models/db/connection";
+import Loan from "../models/loans";
+import { Sequelize, Op } from 'sequelize'; // Importa Sequelize y Op de sequelize
+
 
 
 export const list: RequestHandler = async (req, res) => {
@@ -12,6 +15,19 @@ export const list: RequestHandler = async (req, res) => {
     } catch (error) {
         return res.status(500).json({"message":"Hubo un error", "error": error})
     }
+}
+
+export  function listOne() {
+    return new Promise((resolve, reject) => {
+  const sql = 'SELECT COUNT(*) AS loans, id_wallet as id, capital FROM loans, wallets where loans.id_wallet = wallets.id GROUP BY id_wallet'    
+    connection1.query(sql, (error: QueryError, results: any) => {
+      if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+    })
+  });
 }
 
 export const One: RequestHandler = async (req: Request, res: Response) => {
@@ -93,6 +109,20 @@ export  function walletsConsult(id:string) {
   export  function walletsConsultUser(id:string) {
     return new Promise((resolve, reject) => {
       const sql = `SELECT id_wallet FROM collectors WHERE id = ${id}`;
+      
+      connection1.query(sql, (error: QueryError, results: any) => {
+        if (error) {
+            reject(error);
+          } else {
+            resolve(results);
+          }
+      })
+    });
+  }
+
+  export  function walletsConsultUserName(id:string) {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT name, lastName, id_wallet FROM collectors WHERE id_wallet = ${id}`;
       
       connection1.query(sql, (error: QueryError, results: any) => {
         if (error) {

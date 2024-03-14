@@ -1,6 +1,6 @@
 import { RequestHandler } from "express";
 import Collector from "../models/collectors";
-import { connection1 } from "../db/connection";
+import { connection1 } from "../models/db/connection";
 import { QueryError } from "sequelize";
 
 export const list: RequestHandler = async (req, res) => {

@@ -5,8 +5,9 @@ const path = require('path');
 import { Request, Response, NextFunction } from 'express';
 import * as fs from 'fs'
 import { QueryError } from "sequelize";
-import { connection1 } from "../db/connection";
+import { connection1 } from "../models/db/connection";
 import { RequestHandler } from 'express-serve-static-core';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -40,6 +41,23 @@ import { RequestHandler } from 'express-serve-static-core';
     } catch (error) {
       console.error('Error uploading Pdf:', error);
       res.status(500).send('Internal server error');
+    }finally{
+      const directoryPath = path.join(__dirname, '../images')
+    try {
+        // Obtener la lista de archivos en el directorio
+        const files = fs.readdirSync(directoryPath);
+
+        // Eliminar cada archivo en el directorio
+        files.forEach((file) => {
+            const filePath = path.join(directoryPath, file);
+            fs.unlinkSync(filePath); // Eliminar el archivo
+            console.log(`Archivo ${file} eliminado de dbImages.`);
+        });
+
+        console.log('Todos los archivos en dbImages han sido eliminados.');
+    } catch (error) {
+        console.error('Error al eliminar archivos de dbImages:', error);
+    }
     }
   };
 
@@ -50,6 +68,27 @@ import { RequestHandler } from 'express-serve-static-core';
     data: Buffer; // Usar Buffer para representar datos binarios
     id_client: string;
   }
+  
+
+  const clearDbImages = () => {
+    const directoryPath = path.join(__dirname, '../dbImages')
+    try {
+        // Obtener la lista de archivos en el directorio
+        const files = fs.readdirSync(directoryPath);
+
+        // Eliminar cada archivo en el directorio
+        files.forEach((file) => {
+            const filePath = path.join(directoryPath, file);
+            fs.unlinkSync(filePath); // Eliminar el archivo
+            console.log(`Archivo ${file} eliminado de dbImages.`);
+        });
+
+        console.log('Todos los archivos en dbImages han sido eliminados.');
+    } catch (error) {
+        console.error('Error al eliminar archivos de dbImages:', error);
+    }
+};
+
   
   const getPdfMetadata: RequestHandler = async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -82,13 +121,15 @@ import { RequestHandler } from 'express-serve-static-core';
             const filePath = path.join(documentDir, fileName);
   
             fs.writeFileSync(filePath, bufferData);
-  
+            //saveTempFile(filePath);
             console.log(`Documento con ID ${document.get('id')} guardado en ${filePath}`);
           } else {
             console.error(`El campo 'data' no es un Buffer para el documento con ID ${document.get('id')}`);
           }
         } catch (error) {
           console.error(`Error al obtener 'data' para el documento con ID ${document.get('id')}:`, error);
+        }finally{
+          //clearTempFiles();
         }
       }
   
@@ -103,7 +144,7 @@ import { RequestHandler } from 'express-serve-static-core';
   
 
 
-  export { fileUpload, uploadPdf, getPdfMetadata };
+  export { fileUpload, uploadPdf, getPdfMetadata, clearDbImages };
 
 
 

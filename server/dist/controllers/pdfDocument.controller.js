@@ -22,20 +22,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPdfMetadata = exports.uploadPdf = exports.fileUpload = void 0;
+exports.clearDbImages = exports.getPdfMetadata = exports.uploadPdf = exports.fileUpload = void 0;
 const pdfDocument_1 = __importDefault(require("../models/pdfDocument"));
 const multer = require("multer");
 const path = require('path');
@@ -50,13 +41,13 @@ const fileUpload = multer({
     storage: diskStorage,
 }).single('pdf');
 exports.fileUpload = fileUpload;
-const uploadPdf = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const uploadPdf = async (req, res) => {
     try {
         const pdfFile = req.file;
         const { id_client } = req.body;
         const { mimetype, originalname, filename } = pdfFile;
         const data = fs.readFileSync(path.join(__dirname, '../images/' + filename));
-        yield pdfDocument_1.default.create({
+        await pdfDocument_1.default.create({
             type: mimetype,
             name: originalname,
             data,
@@ -68,12 +59,47 @@ const uploadPdf = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         console.error('Error uploading Pdf:', error);
         res.status(500).send('Internal server error');
     }
-});
+    finally {
+        const directoryPath = path.join(__dirname, '../images');
+        try {
+            // Obtener la lista de archivos en el directorio
+            const files = fs.readdirSync(directoryPath);
+            // Eliminar cada archivo en el directorio
+            files.forEach((file) => {
+                const filePath = path.join(directoryPath, file);
+                fs.unlinkSync(filePath); // Eliminar el archivo
+                console.log(`Archivo ${file} eliminado de dbImages.`);
+            });
+            console.log('Todos los archivos en dbImages han sido eliminados.');
+        }
+        catch (error) {
+            console.error('Error al eliminar archivos de dbImages:', error);
+        }
+    }
+};
 exports.uploadPdf = uploadPdf;
-const getPdfMetadata = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const clearDbImages = () => {
+    const directoryPath = path.join(__dirname, '../dbImages');
+    try {
+        // Obtener la lista de archivos en el directorio
+        const files = fs.readdirSync(directoryPath);
+        // Eliminar cada archivo en el directorio
+        files.forEach((file) => {
+            const filePath = path.join(directoryPath, file);
+            fs.unlinkSync(filePath); // Eliminar el archivo
+            console.log(`Archivo ${file} eliminado de dbImages.`);
+        });
+        console.log('Todos los archivos en dbImages han sido eliminados.');
+    }
+    catch (error) {
+        console.error('Error al eliminar archivos de dbImages:', error);
+    }
+};
+exports.clearDbImages = clearDbImages;
+const getPdfMetadata = async (req, res) => {
     const { id } = req.params;
     try {
-        const documentModels = yield pdfDocument_1.default.findAll({ where: { id_client: id } });
+        const documentModels = await pdfDocument_1.default.findAll({ where: { id_client: id } });
         const documentDir = path.join(__dirname, '../dbImages');
         // Asegurarse de que el directorio exista, si no, créalo
         if (!fs.existsSync(documentDir)) {
@@ -96,6 +122,7 @@ const getPdfMetadata = (req, res) => __awaiter(void 0, void 0, void 0, function*
                     const fileName = `${document.get('id')}.${extension}`;
                     const filePath = path.join(documentDir, fileName);
                     fs.writeFileSync(filePath, bufferData);
+                    //saveTempFile(filePath);
                     console.log(`Documento con ID ${document.get('id')} guardado en ${filePath}`);
                 }
                 else {
@@ -105,6 +132,9 @@ const getPdfMetadata = (req, res) => __awaiter(void 0, void 0, void 0, function*
             catch (error) {
                 console.error(`Error al obtener 'data' para el documento con ID ${document.get('id')}:`, error);
             }
+            finally {
+                //clearTempFiles();
+            }
         }
         const documentFiles = fs.readdirSync(documentDir);
         return res.status(200).json(documentFiles);
@@ -113,5 +143,5 @@ const getPdfMetadata = (req, res) => __awaiter(void 0, void 0, void 0, function*
         console.error('Error al obtener metadatos del documento:', error);
         return res.status(500).json({ message: 'Hubo un error', error: error });
     }
-});
+};
 exports.getPdfMetadata = getPdfMetadata;

@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize"
-import  sequelize  from "../db/connection"
+import  sequelize  from "./db/connection"
 
  const Client = sequelize.define('client', {
     id: {
@@ -77,6 +77,10 @@ import  sequelize  from "../db/connection"
             msg: 'El campo capital no puede estar vacío', // Mensaje de error personalizado
           },
         },
+      },
+      bl:{
+        type: DataTypes.STRING,
+        
       },
     genre: {
         type: DataTypes.STRING,

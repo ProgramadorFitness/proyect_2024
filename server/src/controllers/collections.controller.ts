@@ -1,5 +1,5 @@
 import { QueryError } from "mysql2";
-import { connection1 } from "../db/connection";
+import { connection1 } from "../models/db/connection";
 import Payment from "../models/payment";
 import { Request, RequestHandler, Response } from "express";
 

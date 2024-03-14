@@ -1,59 +1,61 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ClientsConsult = exports.update = exports.create = exports.One = exports.list = void 0;
-const connection_1 = require("../db/connection");
+exports.ClientsConsult = exports.update = exports.create = exports.One = exports.delet = exports.list = void 0;
+const connection_1 = require("../models/db/connection");
 const clients_1 = __importDefault(require("../models/clients"));
-const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const list = async (req, res) => {
     try {
-        const clients = yield clients_1.default.findAll();
+        const clients = await clients_1.default.findAll();
         return res.status(200).json(clients);
     }
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });
     }
-});
+};
 exports.list = list;
-const One = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const delet = async (req, res) => {
     const { id } = req.params;
     try {
-        const clients = yield clients_1.default.findOne({ where: { id: id } });
+        const clients = await clients_1.default.destroy({ where: { id } });
+        return res.status(200).json({ clients, "message": "Client Destroy" });
+    }
+    catch (error) {
+        return res.status(500).json({ "message": "Hubo un error", "error": error });
+    }
+};
+exports.delet = delet;
+const One = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const clients = await clients_1.default.findOne({ where: { id: id } });
         return res.status(200).json(clients);
     }
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });
     }
-});
+};
 exports.One = One;
-const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const create = async (req, res) => {
     try {
-        yield clients_1.default.create(Object.assign({}, req.body));
+        await clients_1.default.create(Object.assign({}, req.body));
         console.log(req);
         return res.status(200).json({ "message": "Client save" });
     }
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });
     }
-});
+};
 exports.create = create;
-const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const update = async (req, res) => {
     const { id } = req.params;
     const { body } = req;
     try {
-        const client = yield clients_1.default.findByPk(id);
+        const client = await clients_1.default.findByPk(id);
         if (client) {
-            yield client.update(body);
+            await client.update(body);
             return res.status(200).json({ "message": "Client update" });
         }
         else {
@@ -65,7 +67,7 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });
     }
-});
+};
 exports.update = update;
 function ClientsConsult(id) {
     return new Promise((resolve, reject) => {

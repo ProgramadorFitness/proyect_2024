@@ -1,5 +1,5 @@
 import { QueryError } from "sequelize";
-import { connection1 } from "../db/connection";
+import { connection1 } from "../models/db/connection";
 import Client from "../models/clients";
 import { Request, RequestHandler, Response } from "express";
 
@@ -12,6 +12,16 @@ export const list: RequestHandler = async (req: Request, res: Response) => {
     } catch (error) {
         return res.status(500).json({"message": "Hubo un error", "error": error})
     }
+}
+
+export const delet: RequestHandler = async (req, res) => {
+  const {id} = req.params
+  try {
+    const clients = await Client.destroy({where: {id}})
+      return res.status(200).json({clients,"message":"Client Destroy"})
+  } catch (error) {
+      return res.status(500).json({"message": "Hubo un error", "error": error})
+  }
 }
 
 export const One: RequestHandler = async (req: Request, res: Response) => {

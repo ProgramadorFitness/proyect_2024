@@ -10,6 +10,7 @@ export interface Client {
     state?: string;
     genre?: string;
     city?: string;
+    bl?: string;
     neighborhood?: string;
 }
 
@@ -53,6 +54,7 @@ export interface Collector {
 }
 export interface Wallet {
     id?: number;
+    loans?: number;
     value_initial?: number;
     value_end?: number;
     interest?: number;

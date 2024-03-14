@@ -1,5 +1,5 @@
 import { DataTypes, Model } from "sequelize"
-import  sequelize  from "../db/connection"
+import  sequelize  from "./db/connection"
 
 const PdfDocument = sequelize.define('PdfDocument', {
  

@@ -1,51 +1,79 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InsertLoan = exports.loansConsultId = exports.loansConsultIdCollector = exports.loansConsultIdClient = exports.loansConsult = exports.delet = exports.create = exports.list = void 0;
+exports.InsertLoan = exports.loansConsultId = exports.loansConsultIdCollector = exports.loansConsultIdClient = exports.loansConsult = exports.delet = exports.updateState = exports.updateStateEdit = exports.create = exports.list = void 0;
 const loans_1 = __importDefault(require("../models/loans"));
-const connection_1 = require("../db/connection");
-const list = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const connection_1 = require("../models/db/connection");
+const list = async (req, res) => {
     try {
-        const loans = yield loans_1.default.findAll();
+        const loans = await loans_1.default.findAll();
         return res.status(200).json(loans);
     }
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });
     }
-});
+};
 exports.list = list;
-const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const create = async (req, res) => {
     try {
-        const loans = yield loans_1.default.create(Object.assign(Object.assign({}, req.body), { returning: true }));
+        const loans = await loans_1.default.create(Object.assign(Object.assign({}, req.body), { returning: true }));
         //console.log(loans)
         return res.status(200).json({ loans, "message": "Loan save" });
     }
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });
     }
-});
+};
 exports.create = create;
-const delet = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateStateEdit = async (req, res) => {
     const { id } = req.params;
+    const { body } = req;
     try {
-        yield loans_1.default.destroy({ where: { id } });
-        return res.status(200).json({ "message": "Client Destroy" });
+        const client = await loans_1.default.findByPk(id);
+        if (client) {
+            await client.update(body);
+            return res.status(200).json({ "message": "Client update" });
+        }
+        else {
+            res.status(404).json({
+                msg: "No existe este cliente"
+            });
+        }
     }
     catch (error) {
         return res.status(500).json({ "message": "Hubo un error", "error": error });
     }
-});
+};
+exports.updateStateEdit = updateStateEdit;
+const updateState = async (req, res) => {
+    const { itemId } = req.params;
+    const { state } = req.body;
+    try {
+        const loan = await loans_1.default.findByPk(itemId);
+        if (!loan) {
+            return res.status(404).json({ message: 'Préstamo no encontrado' });
+        }
+        await loan.update({ state: state });
+        return res.status(200).json({ message: 'Estado actualizado correctamente' });
+    }
+    catch (error) {
+        console.error('Error al actualizar el estado en la base de datos:', error);
+        return res.status(500).json({ message: 'Hubo un error', error: error });
+    }
+};
+exports.updateState = updateState;
+const delet = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await loans_1.default.destroy({ where: { id } });
+        return res.status(200).json({ "message": "Loan Destroy" });
+    }
+    catch (error) {
+        return res.status(500).json({ "message": "Hubo un error", "error": error });
+    }
+};
 exports.delet = delet;
 function loansConsult() {
     return new Promise((resolve, reject) => {

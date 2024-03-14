@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import { QueryError } from "mysql2";
 import Loan from "../models/loans";
-import { connection1 } from "../db/connection";
+import { connection1 } from "../models/db/connection";
 
 
 export const list: RequestHandler = async (req, res) => {
@@ -23,11 +23,47 @@ export const create: RequestHandler = async (req, res) => {
     }
 }
 
+export const updateStateEdit: RequestHandler = async (req, res) => {
+  const {id} = req.params;
+  const {body} = req;
+
+  try {
+  const client = await Loan.findByPk(id);
+    if(client){
+      await client.update(body)
+      return res.status(200).json({"message":"Client update"})
+    }else{
+      res.status(404).json({
+        msg: "No existe este cliente"
+      })
+    }      
+  } catch (error) {
+      return res.status(500).json({"message": "Hubo un error", "error": error})
+  }
+}
+export const updateState: RequestHandler = async (req, res) => {
+  const {itemId} = req.params;
+  const { state } = req.body;
+
+  try {
+    const loan = await Loan.findByPk(itemId);
+    if (!loan) {
+      return res.status(404).json({ message: 'Préstamo no encontrado' });
+    }
+    await loan.update({ state: state });
+
+    return res.status(200).json({ message: 'Estado actualizado correctamente' });
+  } catch (error) {
+    console.error('Error al actualizar el estado en la base de datos:', error);
+    return res.status(500).json({ message: 'Hubo un error', error: error });
+  }
+};
+
 export const delet: RequestHandler = async (req, res) => {
     const {id} = req.params
     try {
         await Loan.destroy({where: {id}})
-        return res.status(200).json({"message":"Client Destroy"})
+        return res.status(200).json({"message":"Loan Destroy"})
     } catch (error) {
         return res.status(500).json({"message": "Hubo un error", "error": error})
     }
